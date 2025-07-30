@@ -6,13 +6,16 @@ namespace backend.Models.DTOs
     public class UpdateProductRequestDto
     {
         [Required]
+        public Guid Id { get; set; }
+        [Required]
+        [MaxLength(100, ErrorMessage = "Product name cannot exceed 100 characters.")]
         public string Name { get; set; }
         [Required]
-        public ProductType Type { get; set; }
+        public int TypeId { get; set; }
         [Required]
-        public ProductSize Size { get; set; }
+        public int SizeId { get; set; }
         [Required]
-        public ProductMaterial Material { get; set; }
+        public int MaterialId { get; set; }
 
 
     }

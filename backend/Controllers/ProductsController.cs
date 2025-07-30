@@ -78,22 +78,48 @@ namespace backend.Controllers
         }
 
         // Add New products?
-
-
-
-
-        //// Update products 
-        //[HttpPut]
-        //[Route("{id:Guid}")]
-        //public async Task<IActionResult> UpdateProduct([FromRoute]Guid id, [FromBody] UpdateProductRequestDto updateRequestDto)
+        //[HttpPost]
+        //public async Task<IActionResult> AddProduct()
         //{
-        //    var productDomain = new Product
-        //    {
-        //        Id = id,
-        //        Name = updateRequestDto.Name ?? 
-        //    }
-
+        //    return Ok();
         //}
+
+
+
+        // Update products 
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductRequestDto updateProductRequestDto)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+                var product = await _productRepository.UpdateProductAsync(id, updateProductRequestDto);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var productDto = new ProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Material = product.ProductMaterial.Name,
+                Type = product.ProductType.Name, 
+                Size = product.ProductSize.Name,
+            };
+
+            return Ok(productDto);
+
+            
+
+
+
+        }
 
 
 
