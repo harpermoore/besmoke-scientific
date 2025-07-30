@@ -18,6 +18,19 @@ builder.Services.AddDbContext<ProductDbContext>(options => options.UseSqlServer(
 // Register Repository Layer
 builder.Services.AddScoped<IProductRepository, SqlProductRepository>();
 
+// CORS setting 
+builder.Services.AddCors(options =>
+{
+    // For development
+    options.AddPolicy("Development", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,6 +41,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("Development");
 
 app.UseAuthorization();
 
