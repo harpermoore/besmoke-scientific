@@ -15,12 +15,18 @@ namespace backend.Repositories
 
         public async Task<List<Product>> GetProductsAsync()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products
+        .Include(p => p.ProductType)
+        .Include(p => p.ProductSize)
+        .Include(p => p.ProductMaterial)
+        .Include(p => p.InventoryStatus)
+        .Include(p => p.InventoryOperations)
+        .ToListAsync();
         }
 
         public async Task<Product> GetProductByIdAsync(Guid id)
         {
-           return await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+            throw new NotImplementedException();
         }
 
 

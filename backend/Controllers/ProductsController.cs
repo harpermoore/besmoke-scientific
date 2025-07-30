@@ -23,25 +23,42 @@ namespace backend.Controllers
         public async Task<IActionResult> GetAllProducts()
         {
             var products = await _productRepository.GetProductsAsync();
+            var productDtos = products.Select(p => new ProductDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Type = p.ProductType?.Name ?? "N/A",
+                Size = p.ProductSize?.Name ?? "N/A",
+                Material = p.ProductMaterial?.Name ?? "N/A",
+                InvenetoryStatus = p.InventoryStatus?.Quantity ?? 0,
+                InventoryOperations = p.InventoryOperations.Select(op => new InventoryOperationDto
+                {
+                    Id = op.Id,
+                    Timestamp = op.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"),
+                    QuantityChange = op.QuantityChange,
+                    ProductId = op.ProductId,
+                }).ToList()
+            }).ToList();
 
-            return Ok(products);
+            return Ok(productDtos);
+
         }
 
        // Get product by Id
-       [HttpGet]
-        [Route("{id:Guid}")]
-        public async Task<IActionResult> GetProductById([FromRoute] Guid id)
-        {
-            var product = await _productRepository.GetProductByIdAsync(id);
+       //[HttpGet]
+       // [Route("{id:Guid}")]
+       // public async Task<IActionResult> GetProductById([FromRoute] Guid id)
+       // {
+       //     var product = await _productRepository.GetProductByIdAsync(id);
             
-            if (product == null)
-            {
-                return BadRequest("");
-            }
+       //     if (product == null)
+       //     {
+       //         return BadRequest("");
+       //     }
 
-            return Ok(product);
+       //     return Ok(product);
 
-        }
+       // }
 
         // Add New products?
 
