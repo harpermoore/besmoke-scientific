@@ -1,11 +1,26 @@
 import { getAllProducts } from "../api/ProductApi";
 import { useEffect, useState } from "react";
-import { Space, Table, Tag } from 'antd';
+import { Space, Table, Modal, Tag, Button } from 'antd';
+import { EditFilled } from '@ant-design/icons'
 
 
 const ProductList = () =>  { 
     const [products, setProducts] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [error, setError] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
+    // Modal functions
+    const showModal = (product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+    const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
     const columns = [
   {
@@ -57,9 +72,11 @@ const ProductList = () =>  {
   {
     title: 'Action',
     key: 'action',
-    render: () => (
+    render: (_, record) => (
       <Space size="middle">
-        <a>Edit</a>
+         <Button type="primary" onClick={()=>showModal(record)}>
+        Edit<EditFilled />
+      </Button>
       </Space>
     ),
   },
@@ -108,6 +125,17 @@ const ProductList = () =>  {
      <div>
       <h1>Products</h1>
       <Table columns={columns} dataSource={products} />
+         <Modal
+        title="Prodcut Detail"
+        closable={{ 'aria-label': 'Custom Close Button' }}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p><strong>Name:</strong> {selectedProduct?.name}</p>
+      <p><strong>Type:</strong> {selectedProduct?.type}</p>
+      <p><strong>Quantity:</strong> {selectedProduct?.inventoryStatus}</p>
+      </Modal>
     </div>
 )  
 }
