@@ -30,7 +30,7 @@ namespace backend.Controllers
                 Type = p.ProductType?.Name ?? "N/A",
                 Size = p.ProductSize?.Name ?? "N/A",
                 Material = p.ProductMaterial?.Name ?? "N/A",
-                InvenetoryStatus = p.InventoryStatus?.Quantity ?? 0,
+                InventoryStatus = p.InventoryStatus?.Quantity ?? 0,
                 InventoryOperations = p.InventoryOperations.Select(op => new InventoryOperationDto
                 {
                     Id = op.Id,
@@ -44,21 +44,38 @@ namespace backend.Controllers
 
         }
 
-       // Get product by Id
-       //[HttpGet]
-       // [Route("{id:Guid}")]
-       // public async Task<IActionResult> GetProductById([FromRoute] Guid id)
-       // {
-       //     var product = await _productRepository.GetProductByIdAsync(id);
-            
-       //     if (product == null)
-       //     {
-       //         return BadRequest("");
-       //     }
+        // Get product by Id
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> GetProductById([FromRoute] Guid id)
+        {
+            var product = await _productRepository.GetProductByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound("Product does not exist.");
+            }
 
-       //     return Ok(product);
+            var productDto = new ProductDto
+            {
+                Id = product.Id, 
+                Name = product.Name,
+                Type = product.ProductType?.Name ?? "N/A",
+                Size = product.ProductSize?.Name ?? "N/A",
+                Material = product.ProductMaterial?.Name ?? "N/A",
+                InventoryStatus = product.InventoryStatus?.Quantity ?? 0,
 
-       // }
+                InventoryOperations = product.InventoryOperations.Select(op => new InventoryOperationDto
+                {
+                    Id = op.Id,
+                    Timestamp = op.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"),
+                    QuantityChange = op.QuantityChange,
+                    ProductId = op.ProductId,
+                }).ToList()
+            }; 
+
+            return Ok(productDto);
+
+        }
 
         // Add New products?
 

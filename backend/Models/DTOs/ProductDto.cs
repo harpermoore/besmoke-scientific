@@ -10,7 +10,7 @@ namespace backend.Models.DTOs
         public string Size { get; set; }
         public string Material { get; set; }
         
-        public int InvenetoryStatus { get; set; }
+        public int InventoryStatus { get; set; }
 
         public List<InventoryOperationDto> InventoryOperations { get; set; } = new List<InventoryOperationDto>();
      

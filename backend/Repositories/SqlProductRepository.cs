@@ -26,9 +26,14 @@ namespace backend.Repositories
 
         public async Task<Product> GetProductByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Products
+           .Include(p => p.ProductType)
+           .Include(p => p.ProductSize)
+           .Include(p => p.ProductMaterial)
+           .Include(p => p.InventoryStatus)
+           .Include(p => p.InventoryOperations)
+           .FirstOrDefaultAsync(p => p.Id == id);
         }
-
 
 
         public Task<Product> UpdateProductAsync(Product product)
