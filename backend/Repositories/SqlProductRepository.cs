@@ -41,8 +41,7 @@ namespace backend.Repositories
 
         public async Task<Product> UpdateProductAsync(Guid id, UpdateProductRequestDto updateProductRequestDto)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id); 
-            // *********************** 這裡返回的product沒有包含導航屬性 ****************************************
+            var product = await GetProductByIdAsync(id);
 
             if (product == null)
             {

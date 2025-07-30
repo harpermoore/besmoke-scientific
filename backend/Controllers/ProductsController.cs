@@ -77,15 +77,6 @@ namespace backend.Controllers
 
         }
 
-        // Add New products?
-        //[HttpPost]
-        //public async Task<IActionResult> AddProduct()
-        //{
-        //    return Ok();
-        //}
-
-
-
         // Update products 
         [HttpPut]
         [Route("{id:Guid}")]
