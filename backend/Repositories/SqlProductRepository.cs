@@ -75,5 +75,43 @@ namespace backend.Repositories
             return product;
 
         }
+
+        public async Task<Product> AddNewProduct(AddNewProductRequestDto addNewProductRequestDto)
+        {
+            // Can be refactor to service layer
+            if (!await _context.ProductSizes.AnyAsync(s => s.Id == addNewProductRequestDto.SizeId))
+            {
+                throw new ArgumentException("Invalid Size ID.");
+            }
+
+            if (!await _context.ProductTypes.AnyAsync(s => s.Id == addNewProductRequestDto.TypeId))
+            {
+                throw new ArgumentException("Invalid Type ID.");
+            }
+
+            if (!await _context.ProductMaterials.AnyAsync(s => s.Id == addNewProductRequestDto.MaterialId))
+            {
+                throw new ArgumentException("Invalid Material ID.");
+            }
+
+            var product = new Product
+            {
+                Id = Guid.NewGuid(),
+                Name = addNewProductRequestDto.Name,
+                TypeId = addNewProductRequestDto.TypeId,
+                SizeId = addNewProductRequestDto.SizeId,
+                MaterialId = addNewProductRequestDto.MaterialId,
+                InventoryStatus = new InventoryStatus
+                {
+                    Quantity = addNewProductRequestDto.Quantity,
+                }
+            };
+
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+            product = await GetProductByIdAsync(product.Id);    
+
+            return product;
+        }
     }
 }

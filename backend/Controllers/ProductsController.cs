@@ -112,7 +112,26 @@ namespace backend.Controllers
 
         }
 
+        // Add new product 
+        [HttpPost]
+        public async Task<IActionResult> AddNewProduct([FromBody] AddNewProductRequestDto addNewProductRequestDto) 
+        {
+            
+            var product = await _productRepository.AddNewProduct(addNewProductRequestDto);
 
+            var productDto = new ProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Material = product.ProductMaterial.Name,
+                Type = product.ProductType.Name,
+                Size = product.ProductSize.Name,
+                InventoryStatus = product.InventoryStatus.Quantity
+            };
+
+            return Ok(productDto);
+           
+        }
 
     }
-}
+}                                                              
