@@ -33,13 +33,13 @@ const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <Layout style={{ minHeight: '100vh', minWidth: '100vw' }}>
+    <Layout style={{ minHeight: '100vh', minWidth: '100vw'}}>
       <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
       </Sider>
       <Layout>
-        <Content style={{ margin: '0 16px' }}>
+        <Content style={{ margin: '0 36px' }}>
          < Outlet />
         </Content>
         <Footer style={{ textAlign: 'center' }}>

@@ -1,9 +1,10 @@
 import { getAllProducts } from "../api/ProductApi";
 import { useEffect, useState } from "react";
-import { Space, Table, Modal, Tag, Button } from 'antd';
-import { EditFilled } from '@ant-design/icons'
-import ProductForm from "../components/NewProductModal";
+import { Space, Table, Modal, Tag, Button, Flex, Typography } from 'antd';
+import { EditFilled, PlusCircleFilled } from '@ant-design/icons'
 import NewProductModal from "../components/NewProductModal";
+import { FaCircle } from "react-icons/fa";
+const { Title } = Typography;
 
 
 const ProductList = () =>  { 
@@ -13,6 +14,8 @@ const ProductList = () =>  {
     const [error, setError] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
+    
+    console.log(products)
     // Product Modal functions
     const showProductModal = (product) => {
     setSelectedProduct(product);
@@ -62,9 +65,14 @@ const ProductList = () =>  {
     key: 'material',
   },
   {
-    title: 'Quantity',
+    title: 'Inventory Status',
     dataIndex: 'inventoryStatus',
     key: 'inventoryStatus',
+    render : (_, record) => (
+        record.isStockLow ? <div style={{display: 'flex', flexDirection:'row', justifyContent: 'start', alignItems: 'center', gap: '1rem' 
+        }}><FaCircle color="red" size={12}/><p>{record.inventoryStatus}</p></div>: 
+        <div style={{display: 'flex', flexDirection:'row', justifyContent: 'start', alignItems: 'center', gap: '1rem' }}><FaCircle color="green" size={12} /><p>{record.inventoryStatus}</p></div>
+    )
   },
 //   {
 //     title: 'Tags',
@@ -117,31 +125,47 @@ const ProductList = () =>  {
 
 
     return(  
-     <div>
-      <h1>Products</h1>
+    
+    <>
+        <Flex
+            vertical="true"   
+            justify="center"
+            align="flex-start"
+            style={{ padding: '16px', width: '100%', flexWrap: 'wrap', gap: '0.1rem'}}
+        >
+            <Title>Products</Title>
+            <Flex 
+            horizontal="true"
+            style={{width: '100%', flexWrap: 'wrap', gap: '0.5rem'}}
+            >
+            <Button type="primary" onClick={()=>showAddModal()}><PlusCircleFilled />Add New Product</Button>
+            <Button type="primary" ><PlusCircleFilled />Add Inventory Operation</Button>
+            </Flex>
+        </Flex>
+        
+        <Table columns={columns} dataSource={products} />    
 
-      <Button type="primary" onClick={()=>showAddModal()}>Add New Product</Button>
 
-      <NewProductModal 
-      isAddModalOpen={isAddModalOpen} 
-      setIsAddModalOpen={setIsAddModalOpen}
-      handleAddOk={handleAddOk}
-      handleAddCancel={handleAddCancel}  
-      />  
+        <NewProductModal 
+        isAddModalOpen={isAddModalOpen} 
+        setIsAddModalOpen={setIsAddModalOpen}
+        handleAddOk={handleAddOk}
+        handleAddCancel={handleAddCancel}  
+        />  
 
-      <Table columns={columns} dataSource={products} />
-         <Modal
+     
+        <Modal
         title="Prodcut Detail"
         closable={{ 'aria-label': 'Custom Close Button' }}
         open={isProductModalOpen}
         onOk={handleProductOk}
         onCancel={handleProductCancel}
-      >
-        <p><strong>Name:</strong> {selectedProduct?.name}</p>
-      <p><strong>Type:</strong> {selectedProduct?.type}</p>
-      <p><strong>Quantity:</strong> {selectedProduct?.inventoryStatus}</p>
-      </Modal>
-    </div>
+        >
+            <p><strong>Name:</strong> {selectedProduct?.name}</p>
+            <p><strong>Type:</strong> {selectedProduct?.type}</p>
+            <p><strong>Quantity:</strong> {selectedProduct?.inventoryStatus}</p>
+        </Modal>
+    </>
 )  
 }
 
