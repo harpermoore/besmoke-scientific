@@ -3,17 +3,31 @@ import useUpdateProduct from "../hooks/useUpdateProduct";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 
 
-const ProductDetailModal = ({isProductModalOpen, setIsProductModalOpen, handleProductOk, handleProductCancel, selectedProduct}) => {
+const ProductDetailModal = ({isProductModalOpen, setIsProductModalOpen, selectedProduct,  onSuccess}) => {
     const [form] = Form.useForm();  
     const {saveChange} = useUpdateProduct();
 
-    const onFinish = values => {
-    console.log('Success:', values);
-    saveChange(selectedProduct.id, values);
-    setIsProductModalOpen(false);
+    
+    // When form submitted
+    const onFinish = async (values) => {
+        try {
+            console.log('Success:', values);
+            await saveChange(selectedProduct.id, values);
+            setIsProductModalOpen(false);
+            onSuccess(); 
+        } catch (error) {
+            console.error('Change failed:', error);
+        }
     };
+
+
     const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
+    };
+
+    
+    const handleProductCancel = () => {
+    setIsProductModalOpen(false);
     };
 
     return (
@@ -21,14 +35,17 @@ const ProductDetailModal = ({isProductModalOpen, setIsProductModalOpen, handlePr
         title="Prodcut Detail"
         closable={{ 'aria-label': 'Custom Close Button' }}
         open={isProductModalOpen}
-        onOk={handleProductOk}
         onCancel={handleProductCancel}
         footer={null}
         >
             <Flex vertical gap="small" >
             <Flex justify="space-between" align="center">
             <p ><strong>Name:</strong> {selectedProduct?.name}</p>
-            <ConfirmDeleteModal productId={selectedProduct?.id}/>
+            <ConfirmDeleteModal 
+                productId={selectedProduct?.id} 
+                setIsProductModalOpen={setIsProductModalOpen}
+                onSuccess={onSuccess}
+            />
             </Flex>
             <p><strong>Type:</strong> {selectedProduct?.type}</p>
             <p><strong>Size:</strong> {selectedProduct?.size}</p>

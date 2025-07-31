@@ -22,26 +22,13 @@ const ProductList = () =>  {
     setSelectedProduct(product);
     setIsProductModalOpen(true);
   };
-    const handleProductOk = () => {
-    setIsProductModalOpen(false);
-  };
-    const handleProductCancel = () => {
-    setIsProductModalOpen(false);
-    };
 
     // Add new product modal functions
     const showAddModal = () => {
         setIsAddModalOpen(true);
     }
 
-    const handleAddOk = () => {
-        setIsAddModalOpen(false);
-    };
-
-    const handleAddCancel = () => {
-        setIsAddModalOpen(false);
-    };
-
+    
 
     const columns = [
   {
@@ -90,18 +77,18 @@ const ProductList = () =>  {
 
 
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await getAllProducts();
-        setProducts(response.data);
-      } catch (err) {
-        console.error("loading failed", err.message);
-        setError(err.message);
-      }
-    };
+ const fetchProducts = async () => {
+    try {
+      const response = await getAllProducts();
+      setProducts(response.data);
+    } catch (err) {
+      console.error("loading failed", err.message);
+      setError(err.message);
+    }
+  };
 
-    fetchProducts(); 
+  useEffect(() => {
+    fetchProducts();
   }, []);
 
 
@@ -130,16 +117,14 @@ const ProductList = () =>  {
         <NewProductModal 
         isAddModalOpen={isAddModalOpen} 
         setIsAddModalOpen={setIsAddModalOpen}
-        handleAddOk={handleAddOk}
-        handleAddCancel={handleAddCancel}  
+        onSuccess={fetchProducts}
         />  
 
         <ProductDetailModal
         isProductModalOpen={isProductModalOpen}
         setIsProductModalOpen={setIsProductModalOpen}
-        handleProductOk={handleProductOk}
-        handleProductCancel={handleProductCancel}
         selectedProduct={selectedProduct}
+        onSuccess={fetchProducts}
         />
     </>
 )  

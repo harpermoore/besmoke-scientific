@@ -5,7 +5,7 @@ import useDeleteProduct from '../hooks/useDeleteProduct';
 
 
 
-const ConfirmDeleteModal = ({productId}) => { 
+const ConfirmDeleteModal = ({productId, setIsProductModalOpen, onSuccess}) => { 
     const { confirmDelete } = useDeleteProduct();
     const [modal, contextHolder] = Modal.useModal();
     const confirm = () => {
@@ -18,8 +18,10 @@ const ConfirmDeleteModal = ({productId}) => {
     okButtonProps: {
       danger: true
     },
-    onOk: () => {
-        confirmDelete(productId)
+    onOk: async () => {
+        await confirmDelete(productId)
+        setIsProductModalOpen(false)
+        onSuccess()
     }
     });
     };

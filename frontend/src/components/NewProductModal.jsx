@@ -3,25 +3,38 @@ import  useSubmitAddProduct from '../hooks/useSubmitAddProduct';
 
 
 
-const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, handleAddOk, handleAddCancel }) => {
+
+const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, onSuccess}) => {
     const [form] = Form.useForm();
     const {submit} = useSubmitAddProduct();
    
-    const onFinish = values => {
-    console.log('Success:', values);
-    submit(values)
-    setIsAddModalOpen(false)
+    const handleAddCancel = () => {
+        setIsAddModalOpen(false);
     };
+
+
+    // When form submitted
+    const onFinish = async (values) => {
+        try {
+            console.log('Success:', values);
+            await submit(values);
+            setIsAddModalOpen(false);
+            onSuccess(); 
+        } catch (error) {
+            console.error('Submit failed:', error);
+        }
+    };
+
+
     const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
     };
     
-  return (
+    return (
     <Modal
         title="Add New Product"
         closable={{ 'aria-label': 'Custom Close Button' }}
         open={isAddModalOpen}
-        onOk={handleAddOk}
         onCancel={handleAddCancel}
         style={{height : 'auto'}}
         footer={null}
