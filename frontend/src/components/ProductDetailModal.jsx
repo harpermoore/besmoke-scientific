@@ -2,13 +2,14 @@ import { Button, Modal, Form, Input, Select, Flex } from "antd";
 import useUpdateProduct from "../hooks/useUpdateProduct";
 
 
-const ProductDetailModal = ({isProductModalOpen, handleProductOk, handleProductCancel, selectedProduct}) => {
+const ProductDetailModal = ({isProductModalOpen, setIsProductModalOpen, handleProductOk, handleProductCancel, selectedProduct}) => {
     const [form] = Form.useForm();  
     const {saveChange} = useUpdateProduct();
 
     const onFinish = values => {
     console.log('Success:', values);
     saveChange(selectedProduct.id, values);
+    setIsProductModalOpen(false);
     };
     const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
@@ -37,13 +38,13 @@ const ProductDetailModal = ({isProductModalOpen, handleProductOk, handleProductC
         onFinishFailed={onFinishFailed}
       >
         <Form.Item label="Product Name" name="Name" required="true" rules={[{ required: true, message: 'Please enter product name' }]}>
-          <Input type="text" placeholder="Enter Product Name" />
+          <Input type="text" placeholder="Enter New Product Name" />
         </Form.Item>
 
           <Flex horizontal="true" gap="large"> 
               <Form.Item label="Type" name="TypeId" required="true" rules={[{ required: true, message: 'Please select product type.' }]}>
               <Select
-                  defaultValue='Select Product Type'
+                  placeholder="Select New Product Type"
                   style={{ flex : 1 }}
                   options={[
                       { value: 1, label: 'Erlenmeyer Flask' },
@@ -55,7 +56,7 @@ const ProductDetailModal = ({isProductModalOpen, handleProductOk, handleProductC
         </Form.Item>
               <Form.Item label="Size" name="SizeId" required="true" rules={[{ required: true, message: 'Please select product size.' }]}>
               <Select
-                  defaultValue="Select Product Size"
+                  placeholder="Select New Product Size"
                   style={{ flex : 1 }}
                   options={[
                       { value: 1, label: '1 mL' },
@@ -70,7 +71,7 @@ const ProductDetailModal = ({isProductModalOpen, handleProductOk, handleProductC
           </Flex>
           <Form.Item label="Material" name="MaterialId" required="true" rules={[{ required: true, message: 'Please select product material.' }]}>
               <Select
-                  defaultValue="Select Product Type"
+                  placeholder="Select New Product Material"
                   options={[
                       { value: 1, label: 'Glass' },
                       { value: 2, label: 'Plastic' },

@@ -136,6 +136,7 @@ const ProductList = () =>  {
 
         <ProductDetailModal
         isProductModalOpen={isProductModalOpen}
+        setIsProductModalOpen={setIsProductModalOpen}
         handleProductOk={handleProductOk}
         handleProductCancel={handleProductCancel}
         selectedProduct={selectedProduct}
