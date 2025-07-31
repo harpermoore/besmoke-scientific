@@ -12,3 +12,7 @@ export const addNewProduct = (newProduct) => {
 export const updateProduct = (productId, updatedProduct) => {
   return axios.put(`https://localhost:7025/api/Products/${productId}`, updatedProduct)
 }
+
+export const deleteProduct = (productId) => {
+  return axios.delete(`https://localhost:7025/api/Products/${productId}`)
+}
