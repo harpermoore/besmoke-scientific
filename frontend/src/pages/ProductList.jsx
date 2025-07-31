@@ -2,25 +2,42 @@ import { getAllProducts } from "../api/ProductApi";
 import { useEffect, useState } from "react";
 import { Space, Table, Modal, Tag, Button } from 'antd';
 import { EditFilled } from '@ant-design/icons'
+import ProductForm from "../components/NewProductModal";
+import NewProductModal from "../components/NewProductModal";
 
 
 const ProductList = () =>  { 
     const [products, setProducts] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [error, setError] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
-    // Modal functions
-    const showModal = (product) => {
+    // Product Modal functions
+    const showProductModal = (product) => {
     setSelectedProduct(product);
-    setIsModalOpen(true);
+    setIsProductModalOpen(true);
   };
-    const handleOk = () => {
-    setIsModalOpen(false);
+    const handleProductOk = () => {
+    setIsProductModalOpen(false);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+    const handleProductCancel = () => {
+    setIsProductModalOpen(false);
+    };
+
+
+    const showAddModal = () => {
+        setIsAddModalOpen(true);
+    }
+
+    const handleAddOk = () => {
+        setIsAddModalOpen(false);
+    };
+
+    const handleAddCancel = () => {
+        setIsAddModalOpen(false);
+    };
+
 
     const columns = [
   {
@@ -74,7 +91,7 @@ const ProductList = () =>  {
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-         <Button type="primary" onClick={()=>showModal(record)}>
+         <Button type="primary" onClick={()=>showProductModal(record)}>
         Edit<EditFilled />
       </Button>
       </Space>
@@ -82,29 +99,7 @@ const ProductList = () =>  {
   },
 ];
 
-//     const data = [
-//   {
-//     key: '1',
-//     name: 'John Brown',
-//     age: 32,
-//     address: 'New York No. 1 Lake Park',
-//     tags: ['nice', 'developer'],
-//   },
-//   {
-//     key: '2',
-//     name: 'Jim Green',
-//     age: 42,
-//     address: 'London No. 1 Lake Park',
-//     tags: ['loser'],
-//   },
-//   {
-//     key: '3',
-//     name: 'Joe Black',
-//     age: 32,
-//     address: 'Sydney No. 1 Lake Park',
-//     tags: ['cool', 'teacher'],
-//   },
-// ];
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -124,13 +119,23 @@ const ProductList = () =>  {
     return(  
      <div>
       <h1>Products</h1>
+
+      <Button type="primary" onClick={()=>showAddModal()}>Add New Product</Button>
+
+      <NewProductModal 
+      isAddModalOpen={isAddModalOpen} 
+      setIsAddModalOpen={setIsAddModalOpen}
+      handleAddOk={handleAddOk}
+      handleAddCancel={handleAddCancel}  
+      />  
+
       <Table columns={columns} dataSource={products} />
          <Modal
         title="Prodcut Detail"
         closable={{ 'aria-label': 'Custom Close Button' }}
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        open={isProductModalOpen}
+        onOk={handleProductOk}
+        onCancel={handleProductCancel}
       >
         <p><strong>Name:</strong> {selectedProduct?.name}</p>
       <p><strong>Type:</strong> {selectedProduct?.type}</p>
