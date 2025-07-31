@@ -31,6 +31,7 @@ namespace backend.Controllers
                 Size = p.ProductSize?.Name ?? "N/A",
                 Material = p.ProductMaterial?.Name ?? "N/A",
                 InventoryStatus = p.InventoryStatus?.Quantity ?? 0,
+                IsStockLow = p.InventoryStatus?.Quantity < 50 ? true : false,
                 InventoryOperations = p.InventoryOperations.Select(op => new InventoryOperationDto
                 {
                     Id = op.Id,
@@ -79,8 +80,8 @@ namespace backend.Controllers
 
         // Update products 
         [HttpPut]
-        [Route("{id:Guid}")]
-        public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductRequestDto updateProductRequestDto)
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateProduct([FromRoute] string id, [FromBody] UpdateProductRequestDto updateProductRequestDto)
         {
 
             if (!ModelState.IsValid)
@@ -88,26 +89,22 @@ namespace backend.Controllers
                 return BadRequest(ModelState);
             }
 
-                var product = await _productRepository.UpdateProductAsync(id, updateProductRequestDto);
+            var product = await _productRepository.UpdateProductAsync(id, updateProductRequestDto);
 
             if (product == null)
             {
-                return NotFound();
+                return NotFound("Can not find the product.");
             }
 
-            var productDto = new ProductDto
+            var updatedProductDto = new UpdatedProductDto
             {
-                Id = product.Id,
                 Name = product.Name,
                 Material = product.ProductMaterial.Name,
-                Type = product.ProductType.Name, 
+                Type = product.ProductType.Name,
                 Size = product.ProductSize.Name,
             };
 
-            return Ok(productDto);
-
-            
-
+            return Ok(updatedProductDto);
 
 
         }
@@ -117,7 +114,7 @@ namespace backend.Controllers
         public async Task<IActionResult> AddNewProduct([FromBody] AddNewProductRequestDto addNewProductRequestDto) 
         {
             
-            var product = await _productRepository.AddNewProduct(addNewProductRequestDto);
+            var product = await _productRepository.AddNewProductAsync(addNewProductRequestDto);
 
             var productDto = new ProductDto
             {
@@ -132,6 +129,22 @@ namespace backend.Controllers
             return Ok(productDto);
            
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteProduct([FromRoute] string id)
+        {
+            var isDelete = await _productRepository.DeleteProductAsync(id);
+
+            if (!isDelete)
+            {
+                return BadRequest("Product not found.");
+            }
+
+            return NoContent();
+
+        }
+
 
     }
 }                                                              

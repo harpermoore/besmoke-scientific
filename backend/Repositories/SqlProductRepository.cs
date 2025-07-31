@@ -25,7 +25,7 @@ namespace backend.Repositories
                                 .ToListAsync();
         }
 
-        public async Task<Product> GetProductByIdAsync(Guid id)
+        public async Task<Product?> GetProductByIdAsync(Guid id)
         {
             return await _context.Products
                            .Include(p => p.ProductType)
@@ -39,17 +39,21 @@ namespace backend.Repositories
         }
 
 
-        public async Task<Product> UpdateProductAsync(Guid id, UpdateProductRequestDto updateProductRequestDto)
+        public async Task<Product?> UpdateProductAsync(string id, UpdateProductRequestDto updateProductRequestDto)
         {
-            var product = await GetProductByIdAsync(id);
+            if (!Guid.TryParse(id, out var guidId))
+            {
+                throw new ArgumentException("Invalid ID format");
+            }
+
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == guidId);
 
             if (product == null)
             {
-
                 return null;
             }
 
-            // Can be refactor to service layer
+            // Can be refactor to service layer 
             if (!await _context.ProductSizes.AnyAsync(s => s.Id == updateProductRequestDto.SizeId))
             {
                 throw new ArgumentException("Invalid Size ID.");
@@ -72,11 +76,15 @@ namespace backend.Repositories
 
             await _context.SaveChangesAsync();
 
+            await _context.Entry(product).Reference(p => p.ProductType).LoadAsync();
+            await _context.Entry(product).Reference(p => p.ProductSize).LoadAsync();
+            await _context.Entry(product).Reference(p => p.ProductMaterial).LoadAsync();
+
             return product;
 
         }
 
-        public async Task<Product> AddNewProduct(AddNewProductRequestDto addNewProductRequestDto)
+        public async Task<Product> AddNewProductAsync(AddNewProductRequestDto addNewProductRequestDto)
         {
             // Can be refactor to service layer
             if (!await _context.ProductSizes.AnyAsync(s => s.Id == addNewProductRequestDto.SizeId))
@@ -113,5 +121,29 @@ namespace backend.Repositories
 
             return product;
         }
+
+        public async Task<bool> DeleteProductAsync(string id)
+        {
+            if (!Guid.TryParse(id, out var guidId))
+            {
+                throw new ArgumentException("Invalid ID format.");
+            }
+
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == guidId);
+
+            if (product == null)
+            {
+                return false;
+            }
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
+            return true;
+
+        }
+
     }
+
+        
 }

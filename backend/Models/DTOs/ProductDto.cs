@@ -12,6 +12,8 @@ namespace backend.Models.DTOs
         
         public int InventoryStatus { get; set; }
 
+        public bool IsStockLow { get; set; }
+
         public List<InventoryOperationDto> InventoryOperations { get; set; } = new List<InventoryOperationDto>();
      
     }

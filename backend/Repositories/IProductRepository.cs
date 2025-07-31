@@ -7,9 +7,11 @@ namespace backend.Repositories
     {
         public Task<List<Product>> GetProductsAsync();
 
-        public Task<Product> GetProductByIdAsync(Guid id);
-        public Task<Product> UpdateProductAsync(Guid id, UpdateProductRequestDto updateProductRequestDto);
+        public Task<Product?> GetProductByIdAsync(Guid id);
+        public Task<Product?> UpdateProductAsync(string id, UpdateProductRequestDto updateProductRequestDto);
 
-        public Task<Product> AddNewProduct(AddNewProductRequestDto addNewProductRequestDto);
+        public Task<Product> AddNewProductAsync(AddNewProductRequestDto addNewProductRequestDto);
+
+        public Task<bool> DeleteProductAsync(string id);
     }
 }
