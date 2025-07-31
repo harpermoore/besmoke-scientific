@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ProductDbContext>(options => options.UseSqlServer(
 
 // Register Repository Layer
 builder.Services.AddScoped<IProductRepository, SqlProductRepository>();
+builder.Services.AddScoped<IInventoryOperationRepository, SqlInventoryOperationRepository>();
 
 // CORS setting 
 builder.Services.AddCors(options =>
