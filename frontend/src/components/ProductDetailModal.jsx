@@ -1,32 +1,35 @@
-import { Button, Form, Input, Select, Flex, Modal } from 'antd';
-import  useSubmitAddProduct from '../hooks/useSubmitAddProduct';
+import { Button, Modal, Form, Input, Select, Flex } from "antd";
+import useUpdateProduct from "../hooks/useUpdateProduct";
 
 
+const ProductDetailModal = ({isProductModalOpen, handleProductOk, handleProductCancel, selectedProduct}) => {
+    const [form] = Form.useForm();  
+    const {saveChange} = useUpdateProduct();
 
-const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, handleAddOk, handleAddCancel }) => {
-    const [form] = Form.useForm();
-    const {submit} = useSubmitAddProduct();
-   
     const onFinish = values => {
     console.log('Success:', values);
-    submit(values)
-    setIsAddModalOpen(false)
+    saveChange(selectedProduct.id, values);
     };
     const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
     };
-    
-  return (
-    <Modal
-        title="Add New Product"
+
+    return (
+        <Modal
+        title="Prodcut Detail"
         closable={{ 'aria-label': 'Custom Close Button' }}
-        open={isAddModalOpen}
-        onOk={handleAddOk}
-        onCancel={handleAddCancel}
-        style={{height : 'auto'}}
+        open={isProductModalOpen}
+        onOk={handleProductOk}
+        onCancel={handleProductCancel}
         footer={null}
-      >
-      <Form
+        >
+            <Button danger size="small">Delete Product</Button>
+            <p><strong>Name:</strong> {selectedProduct?.name}</p>
+            <p><strong>Type:</strong> {selectedProduct?.type}</p>
+            <p><strong>Size:</strong> {selectedProduct?.size}</p>
+            <p><strong>Material:</strong> {selectedProduct?.material}</p>
+            <p><strong>Quantity:</strong> {selectedProduct?.inventoryStatus}</p>
+        <Form
         layout="vertical"
         form={form}
         style={{ maxWidth: 600 }}
@@ -40,7 +43,7 @@ const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, handleAddOk, handle
           <Flex horizontal="true" gap="large"> 
               <Form.Item label="Type" name="TypeId" required="true" rules={[{ required: true, message: 'Please select product type.' }]}>
               <Select
-                  defaultValue="Select Product Type"
+                  defaultValue='Select Product Type'
                   style={{ flex : 1 }}
                   options={[
                       { value: 1, label: 'Erlenmeyer Flask' },
@@ -74,17 +77,15 @@ const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, handleAddOk, handle
                   ]}
               />
         </Form.Item>          
-        <Form.Item label="Inventory Quantity" name="Quantity" required="true" rules={[{ required: true, message: 'Please enter inventory quantity.' }]}>
-              <Input type="number" placeholder="Enter current inventory quantity" />
-        </Form.Item>          
         <Form.Item label={null}>
         <Button type="primary" htmlType="submit">
-          Add Product
+          Save Change
         </Button>
       </Form.Item>
-      </Form>
-    </Modal>
-  )
+      </Form> 
+        </Modal>
+    )
 }
 
-export default NewProductModal;
+
+export default ProductDetailModal;

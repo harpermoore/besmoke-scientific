@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Space, Table, Modal, Tag, Button, Flex, Typography } from 'antd';
 import { EditFilled, PlusCircleFilled } from '@ant-design/icons'
 import NewProductModal from "../components/NewProductModal";
+import ProductDetailModal from "../components/ProductDetailModal";
 import { FaCircle } from "react-icons/fa";
 const { Title } = Typography;
 
@@ -15,8 +16,8 @@ const ProductList = () =>  {
     const [selectedProduct, setSelectedProduct] = useState(null);
 
     
-    console.log(products)
-    // Product Modal functions
+    
+    // Product details modal functions
     const showProductModal = (product) => {
     setSelectedProduct(product);
     setIsProductModalOpen(true);
@@ -28,7 +29,7 @@ const ProductList = () =>  {
     setIsProductModalOpen(false);
     };
 
-
+    // Add new product modal functions
     const showAddModal = () => {
         setIsAddModalOpen(true);
     }
@@ -74,26 +75,6 @@ const ProductList = () =>  {
         <div style={{display: 'flex', flexDirection:'row', justifyContent: 'start', alignItems: 'center', gap: '1rem' }}><FaCircle color="green" size={12} /><p>{record.inventoryStatus}</p></div>
     )
   },
-//   {
-//     title: 'Tags',
-//     key: 'tags',
-//     dataIndex: 'tags',
-//     render: (_, { tags }) => (
-//       <>
-//         {tags.map(tag => {
-//           let color = tag.length > 5 ? 'geekblue' : 'green';
-//           if (tag === 'loser') {
-//             color = 'volcano';
-//           }
-//           return (
-//             <Tag color={color} key={tag}>
-//               {tag.toUpperCase()}
-//             </Tag>
-//           );
-//         })}
-//       </>
-//     ),
-//   },
   {
     title: 'Action',
     key: 'action',
@@ -153,18 +134,12 @@ const ProductList = () =>  {
         handleAddCancel={handleAddCancel}  
         />  
 
-     
-        <Modal
-        title="Prodcut Detail"
-        closable={{ 'aria-label': 'Custom Close Button' }}
-        open={isProductModalOpen}
-        onOk={handleProductOk}
-        onCancel={handleProductCancel}
-        >
-            <p><strong>Name:</strong> {selectedProduct?.name}</p>
-            <p><strong>Type:</strong> {selectedProduct?.type}</p>
-            <p><strong>Quantity:</strong> {selectedProduct?.inventoryStatus}</p>
-        </Modal>
+        <ProductDetailModal
+        isProductModalOpen={isProductModalOpen}
+        handleProductOk={handleProductOk}
+        handleProductCancel={handleProductCancel}
+        selectedProduct={selectedProduct}
+        />
     </>
 )  
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { addNewProduct } from "../api/ProductApi";
 
-export default function useSubmitProductForm() {
+export default function useSubmitAddProduct() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
