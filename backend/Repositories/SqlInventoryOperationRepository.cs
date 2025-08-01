@@ -1,6 +1,10 @@
-﻿using backend.Data;
+﻿using System.Globalization;
+using backend.Data;
 using backend.Models.Domain;
+using backend.Models.DTOs;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace backend.Repositories
@@ -8,10 +12,12 @@ namespace backend.Repositories
     public class SqlInventoryOperationRepository : IInventoryOperationRepository
     {
         private readonly ProductDbContext _context;
+        private readonly IProductRepository _productRepository;
 
-        public SqlInventoryOperationRepository(ProductDbContext context)
+        public SqlInventoryOperationRepository(ProductDbContext context, IProductRepository productRepository )
         {
             _context = context;
+            _productRepository = productRepository;
         }
 
         public async Task<List<InventoryOperation>> GetAllInventoryOperationAsync(int? typeId = null)
@@ -26,9 +32,52 @@ namespace backend.Repositories
 
 
         }
-        public Task<InventoryOperation> CreateInventoryOperationAsync()
+        public async Task<InventoryOperation> CreateInventoryOperationAsync(CreateInventoryOperationRequestDto createInventoryOperationRequestDto)
         {
-            throw new NotImplementedException();
+
+            //check if the product (productId) exist 
+            var productId = Guid.Parse(createInventoryOperationRequestDto.ProductId);
+            if (!await _context.Products.AnyAsync(p => p.Id == productId))
+            {
+                throw new ArgumentException("Invalid Product ID.");
+            }
+
+
+            DateTime date = DateTime.ParseExact(createInventoryOperationRequestDto.Timestamp, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            date = date.Date + DateTime.UtcNow.TimeOfDay;
+
+            DateTime utcTimestamp = DateTime.SpecifyKind(date, DateTimeKind.Utc);
+
+            var newInventoryOperation = new InventoryOperation
+            {
+                ProductId = productId, 
+                Timestamp = utcTimestamp,
+                QuantityChange = createInventoryOperationRequestDto.QuantityChange,
+            };
+
+            _context.InventoryOperations.Add(newInventoryOperation);
+            await _context.SaveChangesAsync();
+
+            var product = await _productRepository.GetProductByIdAsync(newInventoryOperation.ProductId);
+            if (product?.InventoryStatus == null)
+            {
+                throw new InvalidOperationException("InventoryStatus not found.");
+            }
+
+
+            int newQuantity = product.InventoryStatus.Quantity + newInventoryOperation.QuantityChange;
+
+                if (newQuantity < 0)
+                {
+                    throw new InvalidOperationException("Not enough stock to complete this operation.");
+                }
+
+                product.InventoryStatus.Quantity = newQuantity;
+            
+            await _context.SaveChangesAsync();
+
+            return newInventoryOperation;
+
         }
 
     }

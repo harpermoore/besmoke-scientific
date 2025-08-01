@@ -55,47 +55,41 @@ const FilterBy = ({fetchOperations}) => {
     };
 
     return (<>
-    <Flex
-      vertical
-    >
-     <Flex 
-      vertical = {false}
-      align='center'
-      justify='flex-start'
-      gap="small"
-      style={{width: '100%', flexWrap: 'wrap'}}
-      >
+    
         <Form
         onFinish={onFinish}
         nFinishFailed={onFinishFailed}
         >
-            <Form.Item
-            name="filterBy"
-            >
-            <Select
+        <Flex
+        gap="small"
+        >
+        <Form.Item
+        name="filterBy"
+        >
+          <Select
+            allowClear
             onSelect={()=>setIsFilterSelect(true)}
             placeholder="Select Filter"
-            style={{ width: 120 }}
+            style={{ width: 180 }}
             options={[
               { value: 'type', label: 'Product Type' },
-              { value: 'size', label: 'Product Size' },
-              { value: 'material', label: 'Product Material' },
-            ]}
-            />
-            </Form.Item>
+              // disabled size and material for now.
+              { value: 'size', label: 'Product Size', disabled: true },
+              { value: 'material', label: 'Product Material', disabled: true },
+          ]}
+          />
+        </Form.Item>
 
-            <Form.Item label={null}>
-            <Button htmlType="submit">Apply filter</Button>
-            </Form.Item>
+        <Form.Item label={null}>
+          <Button htmlType="submit">Apply filter</Button>
+        </Form.Item>
+        </Flex> 
 
-            {isFilterSelected ? <FilterByType/> : ""}
+        {isFilterSelected ? <FilterByType/> : ""}
+        
+        
         </Form>
-     </Flex>
-       
-    
-    </Flex>
-
-    
+  
 
         </>)
 }

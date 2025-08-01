@@ -15,6 +15,7 @@ namespace backend.Controllers
         public InventoryOperationsController(IInventoryOperationRepository operationrepository)
         {
           _operationRepository = operationrepository;
+            
         }
 
 
@@ -34,6 +35,25 @@ namespace backend.Controllers
             }).ToList();
 
             return Ok(operationDtos);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateInventoryOperation([FromBody] CreateInventoryOperationRequestDto createInventoryOperationRequestDto)
+        {
+            var newInventoryOperation = await _operationRepository.CreateInventoryOperationAsync(createInventoryOperationRequestDto);
+
+            var inventoryOperationDto = new InventoryOperationDto
+            {
+                Id = newInventoryOperation.Id,
+                Timestamp = newInventoryOperation.Timestamp.ToString(),
+                QuantityChange = newInventoryOperation.QuantityChange,
+                ProductId = newInventoryOperation.ProductId
+            };
+
+
+            return Ok(inventoryOperationDto);
+
         }
     }
 }

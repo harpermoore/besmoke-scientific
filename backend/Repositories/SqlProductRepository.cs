@@ -38,7 +38,6 @@ namespace backend.Repositories
             // null checking is in controller layer.
         }
 
-
         public async Task<Product?> UpdateProductAsync(string id, UpdateProductRequestDto updateProductRequestDto)
         {
             if (!Guid.TryParse(id, out var guidId))

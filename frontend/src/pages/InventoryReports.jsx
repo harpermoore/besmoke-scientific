@@ -1,10 +1,14 @@
-import {Table, Flex, Button, Typography } from 'antd';
+import {Table, Flex, Button, Typography, DatePicker } from 'antd';
 import { useState, useEffect } from 'react';
 import { getAllOperations } from "../api/InventoryOperationApi"
 import FilterBy from "../components/FilterBy"
+import { IoCaretUp, IoCaretDownOutline } from "react-icons/io5";
 const { Title } = Typography;
 
-
+const onChange = (date, dateString) => {
+  console.log(date, dateString);
+  
+};
 
 const InventoryReports = () =>  { 
     const [operations, setOperations] = useState([]);
@@ -41,6 +45,10 @@ const InventoryReports = () =>  {
     title: 'Quantity Change',
     dataIndex: 'quantityChange',
     key: 'quantityChange',
+    render: (_, record) => 
+        (record.quantityChange > 0 ? 
+        <Flex vertical={false} align='center' justify='flex-start' gap="small"><IoCaretUp color='green'/><p>{record.quantityChange}</p></Flex> : 
+        <Flex vertical={false} align='center' justify='flex-start' gap="small"><IoCaretDownOutline color='red'/><p>{record.quantityChange}</p></Flex>)
   },
   {
     title: 'Date',
@@ -70,7 +78,8 @@ const InventoryReports = () =>  {
 
             <FilterBy fetchOperations={fetchOperations} />
           
-        </Flex>
+    </Flex>
+     <DatePicker onChange={onChange} />
     <Table columns={columns} dataSource={operations} />
     </>)
 }
