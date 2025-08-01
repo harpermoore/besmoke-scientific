@@ -14,9 +14,9 @@ const InventoryReports = () =>  {
         try {
           const response = await getAllOperations(typeId);
           setOperations(response.data);
-          console.log(response.data);
+        //   console.log(response.data);
         } catch (err) {
-          console.error("loading failed", err.message);
+        //   console.error("loading failed", err.message);
           setError(err.message);
         }
       };
@@ -25,6 +25,7 @@ const InventoryReports = () =>  {
         fetchOperations();
       }, []);  
 
+    // Table column   
     const columns = [
   {
     title: 'Name',
@@ -43,8 +44,8 @@ const InventoryReports = () =>  {
     key: 'quantityChange',
     render: (_, record) => 
         (record.quantityChange > 0 ? 
-        <Flex vertical={false} align='center' justify='flex-start' gap="small"><IoCaretUp color='green'/><p>{record.quantityChange}</p></Flex> : 
-        <Flex vertical={false} align='center' justify='flex-start' gap="small"><IoCaretDownOutline color='red'/><p>{record.quantityChange}</p></Flex>)
+        <Flex  align='center' justify='flex-start' gap="small"><IoCaretUp size={24} color='green'/><p>{record.quantityChange}</p></Flex> : 
+        <Flex align='center' justify='flex-start' gap="small"><IoCaretDownOutline size={24} color='red'/><p>{record.quantityChange}</p></Flex>)
   },
   {
     title: 'Date',

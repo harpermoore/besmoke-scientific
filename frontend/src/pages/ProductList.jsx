@@ -18,8 +18,7 @@ const ProductList = () =>  {
     const [error, setError] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
-    
-    console.log(products)
+
 
     // Product details modal functions
     const showProductModal = (product) => {
@@ -106,20 +105,16 @@ const ProductList = () =>  {
     return(  
     
     <>
-        <Flex
-            vertical="true"   
-            justify="center"
-            align="flex-start"
-            style={{ padding: '16px', width: '100%', flexWrap: 'wrap', gap: '0.1rem'}}
+        <Flex  
+            justify="space-between"
+            align="center"
+            gap="large"
+            style={{ padding: '16px', width: '100%', gap: '0.1rem'}}
         >
             <Title>Products</Title>
-            <Flex 
-            horizontal="true"
-            style={{width: '100%', flexWrap: 'wrap', gap: '0.5rem'}}
-            >
-            <Button type="primary" onClick={()=>showAddModal()}><PlusCircleFilled />Add New Product</Button>
-            <Button type="primary" ><PlusCircleFilled />Add Inventory Operation</Button>
-            </Flex>
+           
+            <Button type="primary" size="large" onClick={()=>showAddModal()}><PlusCircleFilled />Add New Product</Button>
+
         </Flex>
         
         <Table columns={columns} dataSource={products} />    

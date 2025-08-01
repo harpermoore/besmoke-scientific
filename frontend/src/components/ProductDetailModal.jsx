@@ -102,7 +102,7 @@ const ProductDetailModal = ({isProductModalOpen, setIsProductModalOpen, selected
                 </Form.Item>          
 
                 <Flex 
-                horizontal="true" 
+                justify="flex-end"
                 gap="middle"   
                 >
                     <Form.Item label={null}>

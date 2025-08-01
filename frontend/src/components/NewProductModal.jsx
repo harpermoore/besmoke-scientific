@@ -50,11 +50,11 @@ const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, onSuccess}) => {
           <Input type="text" placeholder="Enter Product Name" />
         </Form.Item>
 
-          <Flex horizontal="true" gap="large"> 
-              <Form.Item label="Type" name="TypeId" required="true" rules={[{ required: true, message: 'Please select product type.' }]}>
+          <Flex gap="large" justify='space-between' align='center'> 
+              <Form.Item style={{ minWidth: 200}} label="Type" name="TypeId" required="true" rules={[{ required: true, message: 'Please select product type.' }]}>
               <Select
-                  defaultValue="Select Product Type"
-                  style={{ flex : 1 }}
+                  placeholder="Select Product Type"
+                 
                   options={[
                       { value: 1, label: 'Erlenmeyer Flask' },
                       { value: 2, label: 'Dewar Flask' },
@@ -62,11 +62,11 @@ const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, onSuccess}) => {
                       { value: 4, label: 'Vial'},
                   ]}
               />
-        </Form.Item>
-              <Form.Item label="Size" name="SizeId" required="true" rules={[{ required: true, message: 'Please select product size.' }]}>
+              </Form.Item>
+              
+              <Form.Item style={{ minWidth: 200}} label="Size" name="SizeId" required="true" rules={[{ required: true, message: 'Please select product size.' }]}>
               <Select
-                  defaultValue="Select Product Size"
-                  style={{ flex : 1 }}
+                  placeholder="Select Product Size"
                   options={[
                       { value: 1, label: '1 mL' },
                       { value: 2, label: '10 mL' },
@@ -80,19 +80,19 @@ const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, onSuccess}) => {
           </Flex>
           <Form.Item label="Material" name="MaterialId" required="true" rules={[{ required: true, message: 'Please select product material.' }]}>
               <Select
-                  defaultValue="Select Product Type"
+                  placeholder="Select Product Type"
                   options={[
                       { value: 1, label: 'Glass' },
                       { value: 2, label: 'Plastic' },
                   ]}
               />
         </Form.Item>          
-        <Form.Item label="Inventory Quantity" name="Quantity" required="true" rules={[{ required: true, message: 'Please enter inventory quantity.' }]}>
-              <InputNumber min={1} max={1000} placeholder="Enter current inventory quantity"/>
+        <Form.Item  label="Inventory Quantity" name="Quantity" required="true" rules={[{ required: true, message: 'Please enter inventory quantity.' }]}>
+              <InputNumber style={{ minWidth: '100%'}} min={1} max={1000} placeholder="Enter current inventory quantity"/>
         </Form.Item>          
 
       
-      <Flex justify='flex-end' align='center' gap="small">
+      <Flex justify='flex-end' align='center' gap="small" style={{marginTop: 48}}>
         <Button type="primary" htmlType="submit">
           Add Product
         </Button>
