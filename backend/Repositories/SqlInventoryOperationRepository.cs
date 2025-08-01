@@ -14,12 +14,12 @@ namespace backend.Repositories
             _context = context;
         }
 
-        public async Task<List<InventoryOperation>> GetAllInventoryOperationAsync(int? type = null)
+        public async Task<List<InventoryOperation>> GetAllInventoryOperationAsync(int? typeId = null)
         {
             var operations = _context.InventoryOperations.Include(io => io.Product).ThenInclude(p => p.ProductType).AsQueryable();
 
-            if (type != null) {
-                operations = operations.Where(io => io.Product.TypeId == type);
+            if (typeId != null) {
+                operations = operations.Where(io => io.Product.TypeId == typeId);
             }
 
             return await operations.ToListAsync();

@@ -32,7 +32,7 @@ const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedPage, setSelectedPage] = useState('1');
 
-  console.log(selectedPage);
+
 
   return (
     <Layout style={{ minHeight: '100vh', minWidth: '100vw'}}>

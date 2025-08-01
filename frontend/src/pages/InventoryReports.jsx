@@ -14,6 +14,7 @@ const InventoryReports = () =>  {
         try {
           const response = await getAllOperations(typeId);
           setOperations(response.data);
+          console.log(response.data);
         } catch (err) {
           console.error("loading failed", err.message);
           setError(err.message);
@@ -67,7 +68,7 @@ const InventoryReports = () =>  {
         >
             <Title>Inventory Reports</Title>
 
-            <FilterBy/>
+            <FilterBy fetchOperations={fetchOperations} />
           
         </Flex>
     <Table columns={columns} dataSource={operations} />

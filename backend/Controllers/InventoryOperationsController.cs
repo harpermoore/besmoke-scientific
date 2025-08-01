@@ -21,9 +21,9 @@ namespace backend.Controllers
         // Display inventory report for all products
         // Allowing filtering of inventory report by product type
         [HttpGet]
-        public async Task<IActionResult> GetAllInventoryOperations([FromQuery] int? type )
+        public async Task<IActionResult> GetAllInventoryOperations([FromQuery] int? typeId)
         {
-            var operations = await _operationRepository.GetAllInventoryOperationAsync(type);
+            var operations = await _operationRepository.GetAllInventoryOperationAsync(typeId);
             var operationDtos = operations.Select(o => new InventoryOperationDto
             {
                 Id = o.Id,

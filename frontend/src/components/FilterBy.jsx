@@ -1,66 +1,101 @@
-import { Select, Radio, Flex, Button } from 'antd'
+import { Select, Radio, Flex, Button, Form } from 'antd'
 import { useState } from 'react'
 
+
+// Could be refactored in backend --> dynamic type options
 const typeOptions = [
   {
-    name: "Erlenmeyer Flask",
-    typeId: 1,
+    label: "Erlenmeyer Flask",
+    value: 1,
   }, 
   {
-    name: "Dewar Flask", 
-    typeId: 2
+    label: "Dewar Flask", 
+    value: 2
   }, 
   {
-    name: "Beaker",
-    typeId: 3, 
+    label: "Beaker",
+    value: 3, 
   },
   {
-    name: "Vial", 
-    typeId: 4
+    label: "Vial", 
+    value: 4
   }
 ]
 
 const FilterByType = () => {
   return(
-    <Flex
-    vertical={false}
+    <Form.Item
+    name="typeId"
+     rules={[{ required: true, message: 'Please select a product type.'}]}
     >
-    <Radio.Group>
-      {typeOptions.map((type)=>{ 
-        return<Radio value={type.typeId}>{type.name}</Radio>
-      })}
-    </Radio.Group>
-    </Flex>
+    <Radio.Group
+    options={typeOptions}
+  />
+  </Form.Item>
   )
 }
 
 
-const FilterBy = () => {
+const FilterBy = ({fetchOperations}) => {
   const [isFilterSelected ,setIsFilterSelect] = useState(false)
 
-    return (<>
-     <Flex 
-            vertical = {false}
-            align='center'
-            gap="small"
-            style={{width: '100%', flexWrap: 'wrap'}}
-            >
-        
-        <p>Filter</p> 
-        <Select
-        onSelect={()=>setIsFilterSelect(true)}
-        placeholder="Select Filter"
-        style={{ width: 120 }}
-        options={[
-          { value: 'type', label: 'Product Type' },
-          { value: 'size', label: 'Product Size' },
-          { value: 'material', label: 'Product Material' },
-        ]}
-        />
-        <Button>Apply filter</Button>
-     </Flex>
 
-    {isFilterSelected ? <FilterByType/> : ""}
+      // When form submitted
+    const onFinish = async (values) => {
+        try {
+            console.log('Success:', values);
+            fetchOperations(values.typeId);
+        } catch (error) {
+            console.error('Change failed:', error);
+        }
+    };
+
+     const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
+    };
+
+    return (<>
+    <Flex
+      vertical
+    >
+     <Flex 
+      vertical = {false}
+      align='center'
+      justify='flex-start'
+      gap="small"
+      style={{width: '100%', flexWrap: 'wrap'}}
+      >
+        <Form
+        onFinish={onFinish}
+        nFinishFailed={onFinishFailed}
+        >
+            <Form.Item
+            name="filterBy"
+            >
+            <Select
+            onSelect={()=>setIsFilterSelect(true)}
+            placeholder="Select Filter"
+            style={{ width: 120 }}
+            options={[
+              { value: 'type', label: 'Product Type' },
+              { value: 'size', label: 'Product Size' },
+              { value: 'material', label: 'Product Material' },
+            ]}
+            />
+            </Form.Item>
+
+            <Form.Item label={null}>
+            <Button htmlType="submit">Apply filter</Button>
+            </Form.Item>
+
+            {isFilterSelected ? <FilterByType/> : ""}
+        </Form>
+     </Flex>
+       
+    
+    </Flex>
+
+    
 
         </>)
 }
