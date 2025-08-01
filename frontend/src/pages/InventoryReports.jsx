@@ -1,6 +1,7 @@
-import {Table, Flex, Button, Typography, Select} from 'antd';
+import {Table, Flex, Button, Typography } from 'antd';
 import { useState, useEffect } from 'react';
 import { getAllOperations } from "../api/InventoryOperationApi"
+import FilterBy from "../components/FilterBy"
 const { Title } = Typography;
 
 
@@ -8,9 +9,6 @@ const { Title } = Typography;
 const InventoryReports = () =>  { 
     const [operations, setOperations] = useState([]);
     const [error, setError] = useState(null);
-
-
-    console.log(operations);
 
      const fetchOperations = async (typeId) => {
         try {
@@ -68,13 +66,9 @@ const InventoryReports = () =>  {
             style={{ padding: '16px', width: '100%', flexWrap: 'wrap', gap: '0.1rem'}}
         >
             <Title>Inventory Reports</Title>
-            <Flex 
-            horizontal="true"
-            style={{width: '100%', flexWrap: 'wrap', gap: '0.5rem'}}
-            >
-            {/* <Button type="primary" onClick={()=>showAddModal()}><PlusCircleFilled />Add New Product</Button> */}
-            {/* <Button type="primary" ><PlusCircleFilled />Add Inventory Operation</Button> */}
-            </Flex>
+
+            <FilterBy/>
+          
         </Flex>
     <Table columns={columns} dataSource={operations} />
     </>)
