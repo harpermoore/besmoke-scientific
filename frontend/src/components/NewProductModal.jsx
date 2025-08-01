@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, Flex, Modal } from 'antd';
+import { Button, Form, Input, Select, Flex, Modal, InputNumber } from 'antd';
 import  useSubmitAddProduct from '../hooks/useSubmitAddProduct';
 
 
@@ -88,7 +88,7 @@ const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, onSuccess}) => {
               />
         </Form.Item>          
         <Form.Item label="Inventory Quantity" name="Quantity" required="true" rules={[{ required: true, message: 'Please enter inventory quantity.' }]}>
-              <Input type="number" placeholder="Enter current inventory quantity" />
+              <InputNumber min={1} max={1000} placeholder="Enter current inventory quantity"/>
         </Form.Item>          
 
       
