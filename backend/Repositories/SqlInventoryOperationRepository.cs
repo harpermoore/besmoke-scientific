@@ -25,10 +25,10 @@ namespace backend.Repositories
             var operations = _context.InventoryOperations.Include(io => io.Product).ThenInclude(p => p.ProductType).AsQueryable();
 
             if (typeId != null) {
-                operations = operations.Where(io => io.Product.TypeId == typeId);
+                operations = operations.Where(io => io.Product.TypeId == typeId).OrderByDescending(io => io.Timestamp);
             }
 
-            return await operations.ToListAsync();
+            return await operations.OrderByDescending(io => io.Timestamp).ToListAsync();
 
 
         }
