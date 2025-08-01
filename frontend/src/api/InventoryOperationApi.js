@@ -6,4 +6,8 @@ export const getAllOperations = (typeId) => {
   return axios.get(url);
 };
 
+export const createOperation = (newOperation) => {
+  return axios.post("https://localhost:7025/api/inventoryoperations", newOperation)
+}
+
 

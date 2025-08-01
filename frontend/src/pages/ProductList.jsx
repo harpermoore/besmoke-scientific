@@ -4,7 +4,9 @@ import { Space, Table, Modal, Tag, Button, Flex, Typography } from 'antd';
 import { EditFilled, PlusCircleFilled } from '@ant-design/icons'
 import NewProductModal from "../components/NewProductModal";
 import ProductDetailModal from "../components/ProductDetailModal";
+import CreateOperationModal from "../components/CreateOperationModal"
 import { FaCircle } from "react-icons/fa";
+import { BsFillBoxSeamFill } from "react-icons/bs";
 const { Title } = Typography;
 
 
@@ -12,11 +14,13 @@ const ProductList = () =>  {
     const [products, setProducts] = useState([]);
     const [isProductModalOpen, setIsProductModalOpen] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isOperationModalOpen, setIsOperationModalOpen] = useState(false)
     const [error, setError] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
     
-    
+    console.log(products)
+
     // Product details modal functions
     const showProductModal = (product) => {
     setSelectedProduct(product);
@@ -28,8 +32,12 @@ const ProductList = () =>  {
         setIsAddModalOpen(true);
     }
 
+    const showOperationModal = (product) => {
+      setSelectedProduct(product);
+      setIsOperationModalOpen(true)
+    }
     
-
+    // Table column: edit, create new operation
     const columns = [
   {
     title: 'Name',
@@ -69,6 +77,9 @@ const ProductList = () =>  {
       <Space size="middle">
          <Button type="primary" onClick={()=>showProductModal(record)}>
         Edit<EditFilled />
+      </Button>
+      <Button color="cyan" variant="solid" onClick={()=>showOperationModal(record)}> 
+        <BsFillBoxSeamFill />
       </Button>
       </Space>
     ),
@@ -125,6 +136,13 @@ const ProductList = () =>  {
         setIsProductModalOpen={setIsProductModalOpen}
         selectedProduct={selectedProduct}
         onSuccess={fetchProducts}
+        />
+
+        <CreateOperationModal
+        isOperationModalOpen={isOperationModalOpen}
+        setIsOperationModalOpen={setIsOperationModalOpen}
+        onSuccess={fetchProducts}
+        selectedProduct={selectedProduct}
         />
     </>
 )  

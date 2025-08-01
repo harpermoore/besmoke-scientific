@@ -90,11 +90,18 @@ const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, onSuccess}) => {
         <Form.Item label="Inventory Quantity" name="Quantity" required="true" rules={[{ required: true, message: 'Please enter inventory quantity.' }]}>
               <Input type="number" placeholder="Enter current inventory quantity" />
         </Form.Item>          
-        <Form.Item label={null}>
+
+      
+      <Flex justify='flex-end' align='center' gap="small">
         <Button type="primary" htmlType="submit">
           Add Product
         </Button>
-      </Form.Item>
+        <Button onClick={()=>{handleAddCancel()}}>
+          Cancel
+        </Button>      
+      </Flex>           
+     
+
       </Form>
     </Modal>
   )

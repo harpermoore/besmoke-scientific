@@ -5,10 +5,6 @@ import FilterBy from "../components/FilterBy"
 import { IoCaretUp, IoCaretDownOutline } from "react-icons/io5";
 const { Title } = Typography;
 
-const onChange = (date, dateString) => {
-  console.log(date, dateString);
-  
-};
 
 const InventoryReports = () =>  { 
     const [operations, setOperations] = useState([]);
@@ -79,7 +75,6 @@ const InventoryReports = () =>  {
             <FilterBy fetchOperations={fetchOperations} />
           
     </Flex>
-     <DatePicker onChange={onChange} />
     <Table columns={columns} dataSource={operations} />
     </>)
 }
