@@ -40,7 +40,7 @@ const MainLayout = () => {
           className="demo-logo-vertical"
           style={{display: 'flex', justifyContent: 'center', marginTop: 12, marginBottom: 8}}
           >
-            {collapsed ? <img src='../public/icon-sm.png' width="20" /> : <img src='../public/logo-sm.png' width="84%" />}
+            {collapsed ? <img src='/public/icon-sm.png' width="20" /> : <img src='/public/logo-sm.png' width="84%" />}
           </div>
         <Menu 
         theme="dark" s
