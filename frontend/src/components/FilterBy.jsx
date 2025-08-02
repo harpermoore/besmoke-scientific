@@ -54,6 +54,14 @@ const FilterBy = ({fetchOperations}) => {
     console.log('Failed:', errorInfo);
     };
 
+    // When clear filter
+    const handleClearFilter = () => {
+          setIsFilterSelect(false)
+          fetchOperations();
+    }
+
+
+
     return (<>
     
         <Form
@@ -61,7 +69,7 @@ const FilterBy = ({fetchOperations}) => {
         nFinishFailed={onFinishFailed}
         >
         <Flex
-        gap="small"
+        gap="large"
         >
         <Form.Item
         name="filterBy"
@@ -69,6 +77,7 @@ const FilterBy = ({fetchOperations}) => {
           <Select
             allowClear
             onSelect={()=>setIsFilterSelect(true)}
+            onClear={()=>handleClearFilter()}
             placeholder="Select Filter"
             style={{ width: 180 }}
             options={[
@@ -80,9 +89,12 @@ const FilterBy = ({fetchOperations}) => {
           />
         </Form.Item>
 
-        <Form.Item label={null}>
+          <Flex
+          gap="small"
+          >
           <Button htmlType="submit">Apply filter</Button>
-        </Form.Item>
+          <Button onClick={()=>handleClearFilter()}>Clear Filter</Button>
+          </Flex>
         </Flex> 
 
         {isFilterSelected ? <FilterByType/> : ""}
