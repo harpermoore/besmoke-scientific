@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 
 // Register DB context 
-builder.Services.AddDbContext<ProductDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnectionStrings")));
+builder.Services.AddDbContext<ProductDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register Repository Layer
 builder.Services.AddScoped<IProductRepository, SqlProductRepository>();
