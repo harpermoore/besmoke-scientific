@@ -56,7 +56,7 @@ const InventoryReports = () =>  {
     ];
 
     return(<>
-            <Flex
+          <Flex
             vertical
             justify="flex-start"
             align="flex-start"
@@ -66,7 +66,6 @@ const InventoryReports = () =>  {
             <Banner/>
             <Title style={{marginTop: 10}}>Inventory Reports</Title>
             
-
             <FilterBy fetchOperations={fetchOperations} />
           
           </Flex> 

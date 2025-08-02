@@ -1,5 +1,6 @@
 import { Button, Form, InputNumber, Select, Flex, Modal, Divider, DatePicker, message } from 'antd';
 import useSubmitNewOperation from "../hooks/useSubmitNewOperation"
+import { BsFillBoxSeamFill } from "react-icons/bs";
 
 const ACTION_TYPES = {
   STOCK_IN: 1,

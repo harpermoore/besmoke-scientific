@@ -1,30 +1,29 @@
 import React, { useState } from 'react';
 import {
   DesktopOutlined,
-  FileOutlined,
   PieChartOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
+import { Collapse, Flex, Layout, Menu } from 'antd';
 import { Outlet } from 'react-router-dom';
 import { NavLink } from "react-router";
-import { CgEnter } from 'react-icons/cg';
+
 
 
 const { Header, Content, Footer, Sider } = Layout;
 
-function getItem(label, key, icon, children) {
+function getItem(label, key, icon, disabled) {
   return {
     key,
     icon,
-    children,
+    disabled,
     label,
   };
 }
 
 
 const items = [
-  getItem('Product Overview', '1', <NavLink to="/"><PieChartOutlined /></NavLink>),
-  getItem('Inventory Reports', '2', <NavLink to="/InventoryReports"><DesktopOutlined /></NavLink>),
+  getItem('Product Overview', '1', <NavLink to="/"><PieChartOutlined /></NavLink>, false),
+  getItem('Inventory Reports', '2', <NavLink to="/InventoryReports"><DesktopOutlined /></NavLink>, false),
 ];
 
 
@@ -37,6 +36,12 @@ const MainLayout = () => {
   return (
     <Layout style={{ minHeight: '100vh', minWidth: '100vw'}}>
       <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
+          <div 
+          className="demo-logo-vertical"
+          style={{display: 'flex', justifyContent: 'center', marginTop: 12, marginBottom: 8}}
+          >
+            {collapsed ? <img src='../public/icon-sm.png' width="20" /> : <img src='../public/logo-sm.png' width="84%" />}
+          </div>
         <Menu 
         theme="dark" s
         defaultSelectedKeys={['1']} 
