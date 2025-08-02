@@ -30,6 +30,15 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod()
               .AllowCredentials();
     });
+
+    options.AddPolicy("Production", policy =>
+    {
+        policy.WithOrigins("https://icy-flower-0098b3110.2.azurestaticapps.net")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+
 });
 
 var app = builder.Build();
@@ -43,7 +52,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("Development");
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors("Development");
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+else
+{
+    app.UseCors("Production");
+}
 
 app.UseAuthorization();
 
