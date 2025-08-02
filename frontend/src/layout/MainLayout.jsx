@@ -24,7 +24,6 @@ function getItem(label, key, icon, children) {
 const items = [
   getItem('Product Overview', '1', <NavLink to="/"><PieChartOutlined /></NavLink>),
   getItem('Inventory Reports', '2', <NavLink to="/InventoryReports"><DesktopOutlined /></NavLink>),
-  getItem('Documents', '3', <FileOutlined />),
 ];
 
 
