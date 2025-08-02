@@ -28,6 +28,10 @@ namespace backend.Data
             modelBuilder.Entity<Product>().HasOne(p => p.ProductMaterial).WithMany(m => m.Products).HasForeignKey(p => p.MaterialId);
             modelBuilder.Entity<Product>().HasOne(p => p.ProductType).WithMany(t => t.Products).HasForeignKey(p => p.TypeId);
             modelBuilder.Entity<Product>().HasOne(p => p.ProductSize).WithMany(t => t.Products).HasForeignKey(p => p.SizeId);
+            modelBuilder.Entity<Product>()
+            .HasIndex(p => new { p.TypeId, p.SizeId, p.MaterialId })
+            .IsUnique()
+            .HasDatabaseName("UX_Product_Attribute");
             modelBuilder.Entity<Product>().HasMany(p => p.InventoryOperations).WithOne(o => o.Product).HasForeignKey(o => o.ProductId);
 
             var materials = new List<ProductMaterial>

@@ -109,7 +109,9 @@ namespace backend.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("TypeId", "SizeId", "MaterialId")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Product_Attribute");
 
                     b.ToTable("Products");
 

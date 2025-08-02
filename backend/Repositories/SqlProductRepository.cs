@@ -85,6 +85,19 @@ namespace backend.Repositories
 
         public async Task<Product> AddNewProductAsync(AddNewProductRequestDto addNewProductRequestDto)
         {
+
+            bool isDuplicate = await _context.Products.AnyAsync(p =>
+                               p.TypeId == addNewProductRequestDto.TypeId &&
+                               p.SizeId == addNewProductRequestDto.SizeId &&
+                               p.MaterialId == addNewProductRequestDto.MaterialId
+                               );
+
+            if (isDuplicate)
+            {
+                throw new InvalidOperationException("This product already exists.");
+            }
+
+
             // Can be refactor to service layer
             if (!await _context.ProductSizes.AnyAsync(s => s.Id == addNewProductRequestDto.SizeId))
             {
@@ -100,6 +113,7 @@ namespace backend.Repositories
             {
                 throw new ArgumentException("Invalid Material ID.");
             }
+
 
 
             var product = new Product

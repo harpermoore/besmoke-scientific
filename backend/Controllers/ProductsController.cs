@@ -35,6 +35,7 @@ namespace backend.Controllers
                 InventoryOperations = p.InventoryOperations.Select(op => new InventoryOperationDto
                 {
                     Id = op.Id,
+                    Name = p.Name,
                     Timestamp = op.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"),
                     QuantityChange = op.QuantityChange,
                     ProductId = op.ProductId,

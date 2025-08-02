@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
-    [Migration("20250729195948_Models and seed data set up.")]
-    partial class Modelsandseeddatasetup
+    [Migration("20250802061931_Product with unique Key")]
+    partial class ProductwithuniqueKey
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -112,7 +112,9 @@ namespace backend.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("TypeId", "SizeId", "MaterialId")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Product_Attribute");
 
                     b.ToTable("Products");
 

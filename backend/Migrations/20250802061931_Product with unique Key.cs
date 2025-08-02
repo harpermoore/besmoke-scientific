@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class Modelsandseeddatasetup : Migration
+    public partial class ProductwithuniqueKey : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -195,9 +195,10 @@ namespace backend.Migrations
                 column: "SizeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_TypeId",
+                name: "UX_Product_Attribute",
                 table: "Products",
-                column: "TypeId");
+                columns: new[] { "TypeId", "SizeId", "MaterialId" },
+                unique: true);
         }
 
         /// <inheritdoc />
