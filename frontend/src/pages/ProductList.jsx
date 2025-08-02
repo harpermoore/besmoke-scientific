@@ -1,10 +1,11 @@
 import { getAllProducts } from "../api/ProductApi";
 import { useEffect, useState } from "react";
-import { Space, Table, Modal, Tag, Button, Flex, Typography } from 'antd';
+import { Space, Table, Button, Flex, Typography } from 'antd';
 import { EditFilled, PlusCircleFilled } from '@ant-design/icons'
 import NewProductModal from "../components/NewProductModal";
 import ProductDetailModal from "../components/ProductDetailModal";
 import CreateOperationModal from "../components/CreateOperationModal"
+import Banner from "../components/Banner"
 import { FaCircle } from "react-icons/fa";
 import { BsFillBoxSeamFill } from "react-icons/bs";
 const { Title } = Typography;
@@ -105,18 +106,24 @@ const ProductList = () =>  {
     return(  
     
     <>
-        <Flex  
-            justify="space-between"
-            align="center"
-            gap="large"
-            style={{ padding: '16px', width: '100%', gap: '0.1rem'}}
-        >
-            <Title>Products</Title>
-           
-            <Button type="primary" size="large" onClick={()=>showAddModal()}><PlusCircleFilled />Add New Product</Button>
-
-        </Flex>
         
+        <Flex  
+            vertical
+            justify="flex-start"
+            align="flex-start"
+            style={{ width: '100%'}}
+        >
+            <Banner/>
+            <Title style={{marginTop: 10}}>Products</Title>
+        </Flex>
+
+        <Flex
+          justify="flex-end"
+          style={{marginBottom: 16}}
+        >
+        <Button type="primary" size="large" onClick={()=>showAddModal()}><PlusCircleFilled />Add New Product</Button>
+        </Flex>
+
         <Table columns={columns} dataSource={products} />    
 
 

@@ -7,6 +7,7 @@ import {
 import { Layout, Menu } from 'antd';
 import { Outlet } from 'react-router-dom';
 import { NavLink } from "react-router";
+import { CgEnter } from 'react-icons/cg';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -36,9 +37,8 @@ const MainLayout = () => {
   return (
     <Layout style={{ minHeight: '100vh', minWidth: '100vw'}}>
       <Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
-        <div className="demo-logo-vertical" />
         <Menu 
-        theme="dark" 
+        theme="dark" s
         defaultSelectedKeys={['1']} 
         mode="inline" 
         items={items} 

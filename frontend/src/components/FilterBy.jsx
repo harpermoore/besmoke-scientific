@@ -70,6 +70,7 @@ const FilterBy = ({fetchOperations}) => {
         >
         <Flex
         gap="large"
+        style={{marginTop: 16}}
         >
         <Form.Item
         name="filterBy"
