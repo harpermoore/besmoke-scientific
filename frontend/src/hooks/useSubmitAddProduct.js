@@ -5,7 +5,7 @@ export default function useSubmitAddProduct() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const submit = async (values) => {
+  const submit = async (values, messageApi) => {
     setIsLoading(true);
     setError(null);
 
@@ -19,8 +19,13 @@ export default function useSubmitAddProduct() {
       };
 
       await addNewProduct(newProduct);
+      messageApi.success("Operation created successfully!");
+      return {success : true}
+
     } catch (err) {
       setError(err);
+      messageApi.error("Product already exists.")
+      return {success : false}
     } finally {
       setIsLoading(false);
     }

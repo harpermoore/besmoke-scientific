@@ -1,5 +1,4 @@
 import { Button, Form, InputNumber, Select, Flex, Modal, Divider, DatePicker, message } from 'antd';
-import { SlEarphones } from 'react-icons/sl';
 import useSubmitNewOperation from "../hooks/useSubmitNewOperation"
 
 const ACTION_TYPES = {

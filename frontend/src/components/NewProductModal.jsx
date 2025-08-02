@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, Flex, Modal, InputNumber } from 'antd';
+import { Button, Form, Input, Select, Flex, Modal, InputNumber, message } from 'antd';
 import  useSubmitAddProduct from '../hooks/useSubmitAddProduct';
 
 
@@ -7,6 +7,7 @@ import  useSubmitAddProduct from '../hooks/useSubmitAddProduct';
 const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, onSuccess}) => {
     const [form] = Form.useForm();
     const {submit} = useSubmitAddProduct();
+    const [messageApi, contextHolder] = message.useMessage();
    
     const handleAddCancel = () => {
         setIsAddModalOpen(false);
@@ -17,9 +18,12 @@ const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, onSuccess}) => {
     const onFinish = async (values) => {
         try {
             console.log('Success:', values);
-            await submit(values);
+            let result = await submit(values, messageApi);
+            if (result?.success){
             setIsAddModalOpen(false);
             onSuccess(); 
+            }
+            
         } catch (error) {
             console.error('Submit failed:', error);
         }
@@ -39,6 +43,10 @@ const NewProductModal = ({isAddModalOpen, setIsAddModalOpen, onSuccess}) => {
         style={{height : 'auto'}}
         footer={null}
       >
+
+       {/* // Error message for duplicate product added.  */}
+      {contextHolder}
+
       <Form
         layout="vertical"
         form={form}
