@@ -1,11 +1,11 @@
-import {Table, Flex, Button, Typography, DatePicker } from 'antd';
+import {Table, Flex, Button, Typography,Tabs } from 'antd';
 import { useState, useEffect } from 'react';
 import { getAllOperations } from "../api/InventoryOperationApi"
 import FilterBy from "../components/FilterBy"
 import { IoCaretUp, IoCaretDownOutline } from "react-icons/io5";
 import {getAllProducts} from "../api/ProductApi"
 import Banner from '../components/Banner';
-import { BarChart, CartesianGrid, YAxis, XAxis, Tooltip, Bar, ResponsiveContainer, Legend } from 'recharts';
+import StockBarChart from '../components/StockBarChart';
 const { Title } = Typography;
 
 
@@ -74,6 +74,7 @@ const InventoryReports = () =>  {
 
     let data = []; 
 
+    // Product data to Bar chart data
     if (products != null){ 
       products.map((product)=> { 
         let item = { 
@@ -83,9 +84,18 @@ const InventoryReports = () =>  {
         data.push(item)
       })
     }
-
-    console.log(data);
     
+    const tabs = [
+      {name: "Current Stock", 
+        key: 1, 
+        content: <StockBarChart data={data}/>
+      }, 
+      {
+        name: "Total Sale", 
+        key: 2, 
+        content: <StockBarChart data={data}/>
+      }
+    ];
 
 
     return(<>
@@ -99,21 +109,25 @@ const InventoryReports = () =>  {
             <Banner/>
             <Title style={{marginTop: 10}}>Inventory Reports</Title>
             
-            <FilterBy fetchOperations={fetchOperations} />
+
+            <Tabs
+             style={{width: "100%"}}
+             type="card"
+              items={tabs.map((i) => {
+                return {
+                  label: i.name,
+                  key: i.key,
+                  children: i.content,
+                };
+              })}
+            />
           
           </Flex> 
     
-    {/* Bar Chart for current inventory by product */}
-     <ResponsiveContainer width="100%" height={250}>
-     <BarChart  height={250} data={data}>
-     <CartesianGrid strokeDasharray="3 3" />
-     <XAxis dataKey="name" />
-     <YAxis dateKey="value"/>
-    <Tooltip />
-    <Bar dataKey="value" fill="#7CCED9" />
-    </BarChart> 
-      </ResponsiveContainer>
 
+    <Flex justify='flex-end'>
+    <FilterBy fetchOperations={fetchOperations} />
+    </Flex>
     <Table columns={columns} dataSource={operations} />
     </>)
 }
