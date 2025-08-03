@@ -3,15 +3,19 @@ import { useState, useEffect } from 'react';
 import { getAllOperations } from "../api/InventoryOperationApi"
 import FilterBy from "../components/FilterBy"
 import { IoCaretUp, IoCaretDownOutline } from "react-icons/io5";
+import {getAllProducts} from "../api/ProductApi"
 import Banner from '../components/Banner';
+import { BarChart, CartesianGrid, YAxis, XAxis, Tooltip, Bar, ResponsiveContainer, Legend } from 'recharts';
 const { Title } = Typography;
+
 
 
 const InventoryReports = () =>  { 
     const [operations, setOperations] = useState([]);
+    const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
 
-     const fetchOperations = async (typeId) => {
+    const fetchOperations = async (typeId) => {
         try {
           const response = await getAllOperations(typeId);
           setOperations(response.data);
@@ -22,8 +26,21 @@ const InventoryReports = () =>  {
         }
       };
 
+    const fetchProducts = async () => {
+        try {
+          const response = await getAllProducts();
+          setProducts(response.data);
+        } catch (err) {
+          console.error("loading failed", err.message);
+          setError(err.message);
+        }
+      };  
+
+
     useEffect(() => {
         fetchOperations();
+        fetchProducts();
+        ;
       }, []);  
 
     // Table column   
@@ -55,6 +72,22 @@ const InventoryReports = () =>  {
         },
     ];
 
+    let data = []; 
+
+    if (products != null){ 
+      products.map((product)=> { 
+        let item = { 
+          name: product.name,
+          value: product.inventoryStatus, 
+        }; 
+        data.push(item)
+      })
+    }
+
+    console.log(data);
+    
+
+
     return(<>
           <Flex
             vertical
@@ -70,7 +103,17 @@ const InventoryReports = () =>  {
           
           </Flex> 
     
-    
+    {/* Bar Chart for current inventory by product */}
+     <ResponsiveContainer width="100%" height={250}>
+     <BarChart  height={250} data={data}>
+     <CartesianGrid strokeDasharray="3 3" />
+     <XAxis dataKey="name" />
+     <YAxis dateKey="value"/>
+    <Tooltip />
+    <Bar dataKey="value" fill="#7CCED9" />
+    </BarChart> 
+      </ResponsiveContainer>
+
     <Table columns={columns} dataSource={operations} />
     </>)
 }

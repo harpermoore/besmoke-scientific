@@ -14,7 +14,7 @@ namespace backend.Repositories
         private readonly ProductDbContext _context;
         private readonly IProductRepository _productRepository;
 
-        public SqlInventoryOperationRepository(ProductDbContext context, IProductRepository productRepository )
+        public SqlInventoryOperationRepository(ProductDbContext context, IProductRepository productRepository)
         {
             _context = context;
             _productRepository = productRepository;
@@ -24,7 +24,8 @@ namespace backend.Repositories
         {
             var operations = _context.InventoryOperations.Include(io => io.Product).ThenInclude(p => p.ProductType).AsQueryable();
 
-            if (typeId != null) {
+            if (typeId != null)
+            {
                 operations = operations.Where(io => io.Product.TypeId == typeId).OrderByDescending(io => io.Timestamp);
             }
 
@@ -50,7 +51,7 @@ namespace backend.Repositories
 
             var newInventoryOperation = new InventoryOperation
             {
-                ProductId = productId, 
+                ProductId = productId,
                 Timestamp = utcTimestamp,
                 QuantityChange = createInventoryOperationRequestDto.QuantityChange,
             };
@@ -67,18 +68,36 @@ namespace backend.Repositories
 
             int newQuantity = product.InventoryStatus.Quantity + newInventoryOperation.QuantityChange;
 
-                if (newQuantity < 0)
-                {
-                    throw new InvalidOperationException("Not enough stock to complete this operation.");
-                }
+            if (newQuantity < 0)
+            {
+                throw new InvalidOperationException("Not enough stock to complete this operation.");
+            }
 
-                product.InventoryStatus.Quantity = newQuantity;
-            
+            product.InventoryStatus.Quantity = newQuantity;
+
             await _context.SaveChangesAsync();
 
             return newInventoryOperation;
 
         }
+
+        public async Task<List<ProductSalesDto>> GetAllSale()
+        {
+            var salesByProduct = await _context.Products
+                                        .AsNoTracking()
+                                        .Select(p => new ProductSalesDto
+                                        {
+                                            ProductId = p.Id.ToString(),
+                                            ProductName = p.Name,
+                                            TotalSold = p.InventoryOperations
+                                                .Where(op => op.QuantityChange < 0)
+                                                .Sum(op => -op.QuantityChange)
+                                        }).OrderByDescending(dto => dto.TotalSold)
+                                        // from top sale to low sale
+                                        .ToListAsync();
+            return salesByProduct;
+        }
+
 
     }
 }

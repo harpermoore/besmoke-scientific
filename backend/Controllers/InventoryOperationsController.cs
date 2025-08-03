@@ -37,6 +37,13 @@ namespace backend.Controllers
             return Ok(operationDtos);
         }
 
+        [HttpGet("sales-report")]
+        public async Task<IActionResult> GetAllSale()
+        {
+            var salesByProduct = await _operationRepository.GetAllSale();
+
+            return Ok(salesByProduct);
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateInventoryOperation([FromBody] CreateInventoryOperationRequestDto createInventoryOperationRequestDto)

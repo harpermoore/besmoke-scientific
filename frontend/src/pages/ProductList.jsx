@@ -75,11 +75,11 @@ const ProductList = () =>  {
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-         <Button type="primary" onClick={()=>showProductModal(record)}>
-        Edit<EditFilled />
-      </Button>
       <Button color="cyan" variant="solid" onClick={()=>showOperationModal(record)}> 
         <BsFillBoxSeamFill />
+      </Button>
+      <Button onClick={()=>showProductModal(record)}>
+        Edit<EditFilled />
       </Button>
       </Space>
     ),

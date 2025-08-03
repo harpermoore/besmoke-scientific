@@ -11,5 +11,6 @@ namespace backend.Repositories
 
         public Task<InventoryOperation> CreateInventoryOperationAsync(CreateInventoryOperationRequestDto createInventoryOperationRequestDto);
 
-    }
+        public Task<List<ProductSalesDto>> GetAllSale();
+     }
 }
