@@ -4,7 +4,7 @@ import { getAllOperations } from "../api/InventoryOperationApi"
 import FilterBy from "../components/FilterBy"
 import { IoCaretUp, IoCaretDownOutline } from "react-icons/io5";
 import {getAllProducts} from "../api/ProductApi"
-import { getAllSale } from '../api/InventoryOperationApi';
+import useFetchSales from '../hooks/useFetchSales';
 import Banner from '../components/Banner';
 import InventoryBarChart from '../components/InventoryBarChart';
 
@@ -15,7 +15,8 @@ const { Title } = Typography;
 const InventoryReports = () =>  { 
     const [operations, setOperations] = useState([]);
     const [products, setProducts] = useState([]);
-    const [sales, setSales] = useState([]);
+    const {getSale, sales} = useFetchSales();
+    const [salesTimeFrame, setSalesTimeFrame] = useState(null)
     const [error, setError] = useState(null);
 
     const fetchOperations = async (typeId) => {
@@ -39,20 +40,18 @@ const InventoryReports = () =>  {
         }
       };  
 
-    const fetchAllSale = async () => {
-        try {
-          const response = await getAllSale();
-          setSales(response.data);
-        } catch (err) {
-          console.error("loading failed", err.message);
-          setError(err.message);
-        }
-      };    
+
+
+     const handleSalesTime = (value) => {
+        setSalesTimeFrame(value)
+        getSale(value)
+     } 
+
 
     useEffect(() => {
         fetchOperations();
-        fetchAllSale();
         fetchProducts();
+        getSale()
         ;
       }, []);  
 
@@ -120,9 +119,7 @@ const InventoryReports = () =>  {
       {
         name: "Total Sales", 
         key: 2, 
-        content: <><Segmented options={['All Time','This Month', 'This Year']} onChange={value => {
-      console.log(value); // string
-    }}/><InventoryBarChart data={salesData} barColor={"#85D276"}  /></>
+        content: <><Segmented onChange={(value)=>handleSalesTime(value)} options={['All Time','This Month', 'This Year']}/><InventoryBarChart data={salesData} barColor={"#85D276"}  /></>
       }
     ];
 
