@@ -38,7 +38,7 @@ const FilterByType = () => {
 }
 
 
-const FilterBy = ({fetchOperations, dataSource}) => {
+const FilterBy = ({fetchOperations, dataSource, fetchProducts }) => {
   const [isFilterSelected ,setIsFilterSelect] = useState(false)
 
 
@@ -47,6 +47,7 @@ const FilterBy = ({fetchOperations, dataSource}) => {
         try {
             console.log('Success:', values);
             if (dataSource == "operations"){fetchOperations(values.typeId);}
+            if (dataSource == "products"){fetchProducts(values.typeId)}
             
         } catch (error) {
             console.error('Change failed:', error);
@@ -60,7 +61,9 @@ const FilterBy = ({fetchOperations, dataSource}) => {
     // When clear filter
     const handleClearFilter = () => {
           setIsFilterSelect(false)
-          fetchOperations();
+          if (dataSource == "operations"){fetchOperations();}
+          if (dataSource == "products"){fetchProducts()}
+          
     }
 
 

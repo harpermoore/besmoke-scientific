@@ -6,6 +6,7 @@ import NewProductModal from "../components/NewProductModal";
 import ProductDetailModal from "../components/ProductDetailModal";
 import CreateOperationModal from "../components/CreateOperationModal"
 import Banner from "../components/Banner"
+import FilterBy from "../components/FilterBy";
 import { FaCircle } from "react-icons/fa";
 import { BsFillBoxSeamFill } from "react-icons/bs";
 const { Title } = Typography;
@@ -88,9 +89,9 @@ const ProductList = () =>  {
 
 
 
- const fetchProducts = async () => {
+ const fetchProducts = async (typeId) => {
     try {
-      const response = await getAllProducts();
+      const response = await getAllProducts(typeId);
       setProducts(response.data);
     } catch (err) {
       console.error("loading failed", err.message);
@@ -118,9 +119,10 @@ const ProductList = () =>  {
         </Flex>
 
         <Flex
-          justify="flex-end"
+          justify="space-between"
           style={{marginBottom: 16}}
         >
+        <FilterBy fetchProducts={fetchProducts} dataSource={"products"}/> 
         <Button type="primary" size="large" onClick={()=>showAddModal()}><PlusCircleFilled />Add New Product</Button>
         </Flex>
 

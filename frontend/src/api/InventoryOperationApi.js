@@ -6,8 +6,6 @@ export const getAllOperations = (typeId) => {
   const url = typeId != null
     ? `${API_BASE_URL}/api/inventoryoperations?typeId=${typeId}`
     : `${API_BASE_URL}/api/inventoryoperations`;
-
-  console.log(url); 
   return axios.get(url);
 };
 

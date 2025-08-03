@@ -3,9 +3,14 @@ import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const getAllProducts = () => {
-  return axios.get(`${API_BASE_URL}/api/Products`);
+export const getAllProducts = (typeId) => {
+  const url = typeId != null ? 
+  `${API_BASE_URL}/api/Products?typeId=${typeId}` : 
+  `${API_BASE_URL}/api/Products`; 
+
+  return axios.get(url);
 };
+
 
 export const addNewProduct = (newProduct) => {
   return axios.post(`${API_BASE_URL}/api/Products`, newProduct);
