@@ -46,12 +46,15 @@ const ProductDetailModal = ({isProductModalOpen, setIsProductModalOpen, selected
                 setIsProductModalOpen={setIsProductModalOpen}
                 onSuccess={onSuccess}
             />
+
+            
             </Flex>
             <p><strong>Type:</strong> {selectedProduct?.type}</p>
             <p><strong>Size:</strong> {selectedProduct?.size}</p>
             <p><strong>Material:</strong> {selectedProduct?.material}</p>
             <p><strong>Quantity:</strong> {selectedProduct?.inventoryStatus}</p>
             </Flex>
+
             <Form
             layout="vertical"
             form={form}
@@ -63,11 +66,11 @@ const ProductDetailModal = ({isProductModalOpen, setIsProductModalOpen, selected
                 <Input type="text" placeholder="Enter New Product Name" />
                 </Form.Item>
 
-                <Flex horizontal="true" gap="large"> 
+                <Flex vertical={false} gap="large" justify="space-between" align="center"> 
                     <Form.Item label="Type" name="TypeId" required="true" rules={[{ required: true, message: 'Please select product type.' }]}>
                     <Select
                         placeholder="Select New Product Type"
-                        style={{ flex : 1 }}
+                        style={{ width: 200 }}
                         options={[
                             { value: 1, label: 'Erlenmeyer Flask' },
                             { value: 2, label: 'Dewar Flask' },
@@ -79,7 +82,7 @@ const ProductDetailModal = ({isProductModalOpen, setIsProductModalOpen, selected
                     <Form.Item label="Size" name="SizeId" required="true" rules={[{ required: true, message: 'Please select product size.' }]}>
                     <Select
                         placeholder="Select New Product Size"
-                        style={{ flex : 1 }}
+                        style={{ width: 240 }}
                         options={[
                             { value: 1, label: '1 mL' },
                             { value: 2, label: '10 mL' },
