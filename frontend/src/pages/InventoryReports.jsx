@@ -16,7 +16,6 @@ const InventoryReports = () =>  {
     const [operations, setOperations] = useState([]);
     const [products, setProducts] = useState([]);
     const {getSale, sales} = useFetchSales();
-    const [salesTimeFrame, setSalesTimeFrame] = useState(null)
     const [error, setError] = useState(null);
 
     const fetchOperations = async (typeId) => {
@@ -30,9 +29,10 @@ const InventoryReports = () =>  {
         }
       };
 
-    const fetchProducts = async () => {
+    const fetchProducts = async (typeId) => {
+        
         try {
-          const response = await getAllProducts();
+          const response = await getAllProducts(typeId);
           setProducts(response.data);
         } catch (err) {
           console.error("loading failed", err.message);
@@ -40,10 +40,28 @@ const InventoryReports = () =>  {
         }
       };  
 
+    const handleStockType = (value) => {
+      switch(value){
+        case "All Type":
+        fetchProducts(null);
+        break;
+        case "Erlenmeyer Flask":
+        fetchProducts(1);
+        break;
+        case "Dewar Flask":
+        fetchProducts(2);
+        break;
+        case "Beaker":  
+        fetchProducts(3);
+        break;
+        case "Vial":
+        fetchProducts(4);
+      }
+    }
+
 
 
      const handleSalesTime = (value) => {
-        setSalesTimeFrame(value)
         getSale(value)
      } 
 
@@ -110,16 +128,16 @@ const InventoryReports = () =>  {
       })
     }
 
-    // tab options
+    // tab options (Total Sales)
     const tabs = [
       {name: "Current Stock", 
         key: 1, 
-        content: <InventoryBarChart data={stockData} barColor={"#7CCED9"}  />
+        content:<><Segmented onChange={(value)=>handleStockType(value)} options={['All Type','Erlenmeyer Flask','Dewar Flask', 'Beaker', 'Vial']}/><InventoryBarChart data={stockData} barColor={"#7CCED9"} isLowStockLine={true} /></>
       }, 
       {
         name: "Total Sales", 
         key: 2, 
-        content: <><Segmented onChange={(value)=>handleSalesTime(value)} options={['All Time','This Month', 'This Year']}/><InventoryBarChart data={salesData} barColor={"#85D276"}  /></>
+        content: <><Segmented onChange={(value)=>handleSalesTime(value)} options={['All Time','This Month', 'This Year']}/><InventoryBarChart data={salesData} barColor={"#85D276"} isLowStockLine={false} /></>
       }
     ];
 
