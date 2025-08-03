@@ -22,6 +22,8 @@ const typeOptions = [
   }
 ]
 
+
+// Radio Group
 const FilterByType = () => {
   return(
     <Form.Item
@@ -36,22 +38,23 @@ const FilterByType = () => {
 }
 
 
-const FilterBy = ({fetchOperations}) => {
+const FilterBy = ({fetchOperations, dataSource}) => {
   const [isFilterSelected ,setIsFilterSelect] = useState(false)
 
 
-      // When form submitted
-    const onFinish = async (values) => {
+  // When form submitted
+  const onFinish = async (values) => {
         try {
             console.log('Success:', values);
-            fetchOperations(values.typeId);
+            if (dataSource == "operations"){fetchOperations(values.typeId);}
+            
         } catch (error) {
             console.error('Change failed:', error);
         }
     };
 
-     const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
+  const onFinishFailed = errorInfo => {
+        console.log('Failed:', errorInfo);
     };
 
     // When clear filter
@@ -70,7 +73,7 @@ const FilterBy = ({fetchOperations}) => {
         >
         <Flex
         gap="large"
-        style={{marginTop: 16}}
+        style={{marginTop: 10}}
         >
         <Form.Item
         name="filterBy"

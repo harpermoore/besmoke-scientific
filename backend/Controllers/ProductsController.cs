@@ -20,9 +20,9 @@ namespace backend.Controllers
 
         // Get all products -> Display list of products 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts(int? typeId = null)
         {
-            var products = await _productRepository.GetProductsAsync();
+            var products = await _productRepository.GetProductsAsync(typeId);
             var productDtos = products.Select(p => new ProductDto
             {
                 Id = p.Id,

@@ -153,7 +153,7 @@ const InventoryReports = () =>  {
     
 
     <Flex justify='flex-end' style={{marginTop: 32}}>
-    <FilterBy fetchOperations={fetchOperations} />
+    <FilterBy fetchOperations={fetchOperations} dataSource={"operation"}/>
 
     </Flex>
     <Table columns={columns} dataSource={operations} />

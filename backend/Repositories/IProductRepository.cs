@@ -5,7 +5,7 @@ namespace backend.Repositories
 {
     public interface IProductRepository
     {
-        public Task<List<Product>> GetProductsAsync();
+        public Task<List<Product>> GetProductsAsync(int? typeId = null);
 
         public Task<Product?> GetProductByIdAsync(Guid id);
         public Task<Product?> UpdateProductAsync(string id, UpdateProductRequestDto updateProductRequestDto);

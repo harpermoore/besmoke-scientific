@@ -1,4 +1,5 @@
-﻿using backend.Data;
+﻿using System;
+using backend.Data;
 using backend.Models.Domain;
 using backend.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +15,21 @@ namespace backend.Repositories
             _context = context;
         }
 
-        public async Task<List<Product>> GetProductsAsync()
+        public async Task<List<Product>> GetProductsAsync(int? typeId)
         {
+
+            if (typeId != null)
+            {
+                return await _context.Products
+                                .Where(p => p.TypeId == typeId)
+                                .Include(p => p.ProductType)
+                                .Include(p => p.ProductSize)
+                                .Include(p => p.ProductMaterial)
+                                .Include(p => p.InventoryStatus)
+                                .Include(p => p.InventoryOperations)
+                                .ToListAsync();
+            }
+
             return await _context.Products
                                 .Include(p => p.ProductType)
                                 .Include(p => p.ProductSize)
