@@ -42,7 +42,7 @@ const InventoryReports = () =>  {
 
     const handleStockType = (value) => {
       switch(value){
-        case "All Type":
+        case "All":
         fetchProducts(null);
         break;
         case "Erlenmeyer Flask":
@@ -132,7 +132,7 @@ const InventoryReports = () =>  {
     const tabs = [
       {name: "Current Stock", 
         key: 1, 
-        content:<><Segmented onChange={(value)=>handleStockType(value)} options={['All Type','Erlenmeyer Flask','Dewar Flask', 'Beaker', 'Vial']}/><InventoryBarChart data={stockData} barColor={"#7CCED9"} isLowStockLine={true} /></>
+        content:<><Segmented onChange={(value)=>handleStockType(value)} options={['All','Erlenmeyer Flask','Dewar Flask', 'Beaker', 'Vial']}/><InventoryBarChart data={stockData} barColor={"#7CCED9"} isLowStockLine={true} /></>
       }, 
       {
         name: "Total Sales", 
