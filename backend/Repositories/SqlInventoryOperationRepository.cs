@@ -81,8 +81,25 @@ namespace backend.Repositories
 
         }
 
-        public async Task<List<ProductSalesDto>> GetAllSale()
+        public async Task<List<ProductSalesDto>> GetAllSale(string? timeFrame)
         {
+            DateTime? startDate = null;
+            DateTime? endDate = null;
+
+            var now = DateTime.UtcNow;
+            if (timeFrame == "month") { 
+            // Query this month
+            startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            endDate = startDate.Value.AddMonths(1);
+            }
+
+            else if (timeFrame == "year")
+            {
+               startDate = new DateTime(DateTime.Now.Year, 1, 1);
+               endDate = startDate.Value.AddYears(1);
+            }
+
+            
             var salesByProduct = await _context.Products
                                         .AsNoTracking()
                                         .Select(p => new ProductSalesDto
@@ -90,7 +107,10 @@ namespace backend.Repositories
                                             ProductId = p.Id.ToString(),
                                             ProductName = p.Name,
                                             TotalSold = p.InventoryOperations
-                                                .Where(op => op.QuantityChange < 0)
+                                                .Where(op => op.QuantityChange < 0 &&
+                                                 (startDate == null || op.Timestamp >= startDate) &&
+                                                 (endDate == null || op.Timestamp < endDate)
+                                                )
                                                 .Sum(op => -op.QuantityChange)
                                         }).OrderByDescending(dto => dto.TotalSold)
                                         // from top sale to low sale

@@ -38,9 +38,9 @@ namespace backend.Controllers
         }
 
         [HttpGet("sales-report")]
-        public async Task<IActionResult> GetAllSale()
+        public async Task<IActionResult> GetAllSale([FromQuery] string? timeFrame)
         {
-            var salesByProduct = await _operationRepository.GetAllSale();
+            var salesByProduct = await _operationRepository.GetAllSale(timeFrame);
 
             return Ok(salesByProduct);
         }

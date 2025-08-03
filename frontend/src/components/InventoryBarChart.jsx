@@ -1,6 +1,9 @@
 import { BarChart, CartesianGrid, YAxis, XAxis, Tooltip, Bar, ResponsiveContainer, Legend } from 'recharts';
 
 
+
+
+
 const InventoryBarChart = ({data, barColor}) => {
 
     return(

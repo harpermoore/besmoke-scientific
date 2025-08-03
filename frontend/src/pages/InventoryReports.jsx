@@ -1,4 +1,4 @@
-import {Table, Flex, Button, Typography,Tabs } from 'antd';
+import {Table, Flex, Button, Typography,Tabs, Segmented } from 'antd';
 import { useState, useEffect} from 'react';
 import { getAllOperations } from "../api/InventoryOperationApi"
 import FilterBy from "../components/FilterBy"
@@ -7,6 +7,7 @@ import {getAllProducts} from "../api/ProductApi"
 import { getAllSale } from '../api/InventoryOperationApi';
 import Banner from '../components/Banner';
 import InventoryBarChart from '../components/InventoryBarChart';
+
 const { Title } = Typography;
 
 
@@ -110,15 +111,18 @@ const InventoryReports = () =>  {
       })
     }
 
+    // tab options
     const tabs = [
       {name: "Current Stock", 
         key: 1, 
         content: <InventoryBarChart data={stockData} barColor={"#7CCED9"}  />
       }, 
       {
-        name: "Total Sale", 
+        name: "Total Sales", 
         key: 2, 
-        content: <InventoryBarChart data={salesData} barColor={"#85D276"}  />
+        content: <><Segmented options={['All Time','This Month', 'This Year']} onChange={value => {
+      console.log(value); // string
+    }}/><InventoryBarChart data={salesData} barColor={"#85D276"}  /></>
       }
     ];
 
@@ -135,6 +139,7 @@ const InventoryReports = () =>  {
             <Title style={{marginTop: 10}}>Inventory Reports</Title>
             
 
+            
             <Tabs
              style={{width: "100%", marginTop: 24}}
              type="card"
@@ -150,8 +155,9 @@ const InventoryReports = () =>  {
           </Flex> 
     
 
-    <Flex justify='flex-end'>
+    <Flex justify='flex-end' style={{marginTop: 32}}>
     <FilterBy fetchOperations={fetchOperations} />
+
     </Flex>
     <Table columns={columns} dataSource={operations} />
     </>)
