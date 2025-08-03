@@ -1,16 +1,16 @@
 import { BarChart, CartesianGrid, YAxis, XAxis, Tooltip, Bar, ResponsiveContainer, Legend } from 'recharts';
 
 
-const StockBarChart = ({data}) => {
+const InventoryBarChart = ({data, barColor}) => {
 
     return(
-     <ResponsiveContainer width="100%" height={250}>
+     <ResponsiveContainer width="100%" height={250} style={{marginLeft: -30}}>
      <BarChart  height={250} data={data}>
      <CartesianGrid strokeDasharray="3 3" />
      <XAxis dataKey="name" />
      <YAxis dateKey="value"/>
     <Tooltip />
-    <Bar dataKey="value" fill="#7CCED9" />
+    <Bar dataKey="value" fill={barColor} />
     </BarChart> 
       </ResponsiveContainer>
     )
@@ -19,4 +19,4 @@ const StockBarChart = ({data}) => {
 
    
 
-export default StockBarChart
+export default InventoryBarChart;

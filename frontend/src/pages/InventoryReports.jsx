@@ -1,11 +1,12 @@
 import {Table, Flex, Button, Typography,Tabs } from 'antd';
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
 import { getAllOperations } from "../api/InventoryOperationApi"
 import FilterBy from "../components/FilterBy"
 import { IoCaretUp, IoCaretDownOutline } from "react-icons/io5";
 import {getAllProducts} from "../api/ProductApi"
+import { getAllSale } from '../api/InventoryOperationApi';
 import Banner from '../components/Banner';
-import StockBarChart from '../components/StockBarChart';
+import InventoryBarChart from '../components/InventoryBarChart';
 const { Title } = Typography;
 
 
@@ -13,6 +14,7 @@ const { Title } = Typography;
 const InventoryReports = () =>  { 
     const [operations, setOperations] = useState([]);
     const [products, setProducts] = useState([]);
+    const [sales, setSales] = useState([]);
     const [error, setError] = useState(null);
 
     const fetchOperations = async (typeId) => {
@@ -36,9 +38,19 @@ const InventoryReports = () =>  {
         }
       };  
 
+    const fetchAllSale = async () => {
+        try {
+          const response = await getAllSale();
+          setSales(response.data);
+        } catch (err) {
+          console.error("loading failed", err.message);
+          setError(err.message);
+        }
+      };    
 
     useEffect(() => {
         fetchOperations();
+        fetchAllSale();
         fetchProducts();
         ;
       }, []);  
@@ -72,7 +84,9 @@ const InventoryReports = () =>  {
         },
     ];
 
-    let data = []; 
+    let stockData=[];
+    let salesData=[];
+
 
     // Product data to Bar chart data
     if (products != null){ 
@@ -81,19 +95,30 @@ const InventoryReports = () =>  {
           name: product.name,
           value: product.inventoryStatus, 
         }; 
-        data.push(item)
+        stockData.push(item)
       })
     }
-    
+
+    // Sale data to Bar Chart data
+    if (sales != null){ 
+      sales.map((product)=> { 
+        let item = { 
+          name: product.productName,
+          value: product.totalSold, 
+        }; 
+        salesData.push(item)
+      })
+    }
+
     const tabs = [
       {name: "Current Stock", 
         key: 1, 
-        content: <StockBarChart data={data}/>
+        content: <InventoryBarChart data={stockData} barColor={"#7CCED9"}  />
       }, 
       {
         name: "Total Sale", 
         key: 2, 
-        content: <StockBarChart data={data}/>
+        content: <InventoryBarChart data={salesData} barColor={"#85D276"}  />
       }
     ];
 
@@ -111,7 +136,7 @@ const InventoryReports = () =>  {
             
 
             <Tabs
-             style={{width: "100%"}}
+             style={{width: "100%", marginTop: 24}}
              type="card"
               items={tabs.map((i) => {
                 return {

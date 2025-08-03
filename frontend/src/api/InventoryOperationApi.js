@@ -14,3 +14,7 @@ export const getAllOperations = (typeId) => {
 export const createOperation = (newOperation) => {
   return axios.post(`${API_BASE_URL}/api/inventoryoperations`, newOperation);
 };
+
+export const getAllSale = () => {
+  return axios.get(`${API_BASE_URL}/api/inventoryoperations/sales-report`);
+}
