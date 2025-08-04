@@ -98,6 +98,8 @@ const ProductList = () =>  {
       setError(err.message);
     }
   };
+  
+
 
   useEffect(() => {
     fetchProducts();
